@@ -132,6 +132,8 @@
 \newcommand{\osig}{\ensuremath{\overline{\sigma}}}
 \newcommand{\osigs}{\ensuremath{\overline{\sigma_{\text{s}}}}}
 
+\newcommand{\fwc}{\mbox{FW-CADIS}}
+
 \begin{document}
 
 
@@ -229,23 +231,97 @@ ORNL}
 %%---------------------------------------------------------------------------%%
 \subsection{Steel Plate Embedded in Water}
 
-\begin{itemize}
-\item{Mesh}
-\item{Materials}
-\item{Detector}
-\item{etc.}
-\end{itemize}
+The first test case we describe is an idealized geometry of a steel plate embedded in
+water; it is modeled after the scenario presented in Reference 
+\cite{wilsonslaybaugh}. 
+A diagram of the problem geometry is shown in Figure \ref{steelxz} and a list
+of material properties used in the problem is given in Table \ref{steel-mat}.
+In Figure \ref{steelxz}, the orange region contains the source material, the black
+region is composed of steel, the blue regions indicate water, and the white region is
+composed of air.
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.4\textwidth]{img/steel-xz.png}
+\caption{Steel plate in water geometry ($x-z$ slice through $y = 25$ cm) 
+         \cite{wilsonslaybaugh}.}
+\label{steelxz}
+\end{figure}
+
+The problem measurements are $53\times50\times140$ cm. The scenario is uniform in the 
+$y$-direction and materials vary mainly in the $z$-direction. The source region 
+extends from 0 to 15 cm, the steel shield extends between 15 and 30 cm, the water and 
+steel plate extend from 30 to 130 cm, and the air extends from 130 to 140 cm. The 
+steel plate is 3 cm wide and is centered at $x = 26.5$ cm. Vacuum boundary conditions 
+were used at the problem boundaries.
+
+A non-uniform Cartesian mesh was used for the spatial discretization in the 
+deterministic calculations. In the $x$-direction, voxel width is 5 cm between $x = 0$
+cm and $x = 25$ cm, 0.5 cm between $x = 25$ cm and $x = 28$ cm, and 5 cm between 
+$x = 28$ cm and $x = 53$ cm. A uniform spacing of voxel width 1 cm was used in the 
+$y$-direction. In the $z$-direction, the spatial cell width is 3 cm between $z = 0$ cm and
+$z = 30$ cm and 2 cm between $z = 30$ cm and $z = 140$ cm.
+
+\begin{table}[!htb]
+\centering
+\caption{Materials and compositions in the steel plate in water scenario.}
+\label{steel-mat}
+\begin{tabular}{l|cc}
+Material & \multicolumn{2}{c}{Isotopes (Atomic \%)} \\ \hline
+\multirow{5}{*}{Source}   & U-235   & (0.000247) \\
+                          & U-238   & (0.009287) \\
+                          & Zr-nat. & (0.004009) \\
+                          & H-1     & (0.037394) \\
+                          & O-16    & (0.034927) \\ \hline
+\multirow{4}{*}{Air}      & N-14    & (0.784431) \\
+                          & O-16    & (0.210748) \\
+                          & Ar-nat. & (0.004671) \\
+                          & C-nat.  & (0.000150) \\ \hline
+\multirow{2}{*}{Carbon Steel} & C-nat.  & (0.022831) \\
+                              & Fe-nat. & (0.977169) \\ \hline
+\multirow{2}{*}{Water}        & H-1     & (2)        \\
+                              & O-16    & (1)        \\
+\end{tabular}
+\end{table}
+
+The composition of the neutron source block is a homogenization of water, zirconium,
+and uranium and was calculated based on the geometry and composition of the Rowlands
+UO$_2$ pin cell benchmark specification \cite{pincell}. The source is a U-235 fission 
+spectrum that is uniformly distributed throughout the homogenized material. The
+compositions of air, carbon steel, and water were taken from the Compendium of 
+Material Composition Data for Radiation Transport Modeling \cite{pnnl}.
 
 %%---------------------------------------------------------------------------%%
 %%---------------------------------------------------------------------------%%
 \subsection{Dog-Legged Void Neutron}
 
-\begin{itemize}
-\item{Mesh}
-\item{Materials}
-\item{Detector}
-\item{etc.}
-\end{itemize}
+The next problem modeled is the dog-legged void neutron (DLVN) experimental benchmark,
+which was designed to measure neutron streaming in iron with air voids. The model used
+in the following calculations was constructed from References 
+\cite{sw-dlvn,j-dlvn,dlvn1991}. The two materials used in the problem are elemental 
+iron and polyethylene. The polyethylene composition used was C$_2$H$_4$. This is 
+listed as ``polyethylene, non-borated'' and is material 248 in Reference \cite{pnnl}. 
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[width=0.5\textwidth]{img/dlvn.png}
+\caption{Centerline cutaway of DLVN setup \cite{sw-dlvn}.}
+\label{dlvn}
+\end{figure}
+
+The problem measurements are $40\times54\times48$ inches. A uniform spatial mesh was 
+imposed over the entire problem, with voxels measuring 1 inch per side. The neutron
+source in this problem is a Cf-252 point source located at the center of the $x-$ and
+$y-$directions and at $z = 9$ inches.
+This point source was approximated as a small volumetric source in the tests in this 
+work.
+
+The experimental configuration is symmetric about the $y-z$ plane at $x = 0$ and so is
+usually simulated with a reflecting boundary at $x = 0$ and vacuum boundaries on all
+other sides of the configuration. For the tests in this work, the use of reflecting
+boundary conditions was not available, so the model used 
+was constructed to represent the entire experimental geometry configuration. Vacuum
+boundary conditions were applied to the outside of the entire problem.
 
 %---------------------------------------------------------------------------%%
 \section{Conclusions}
