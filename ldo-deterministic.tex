@@ -119,8 +119,10 @@
 \newcommand{\E}[1]{$\times10^{#1}$}
 \newcommand{\fwc}{\mbox{FW-CADIS}}
 
-\begin{document}
+\showboxdepth=\maxdimen
+\showboxbreadth=\maxdimen
 
+\begin{document}
 
 %Define fields for \maketitle  (fields are \author, \date, \thanks, and \title)
 
@@ -359,7 +361,7 @@ compositions of air, carbon steel, and water were taken from the Compendium of
 Material Composition Data for Radiation Transport Modeling \cite{pnnl}.
 
 %%---------------------------------------------------------------------------%%
-\subsection{Dog-Legged Void Neutron}
+\subsection{Dog-Legged Void Neutron (DLVN)}
 
 The next problem modeled is the dog-legged void neutron (DLVN) experimental 
 benchmark, which was designed to measure neutron streaming in iron with air
@@ -442,9 +444,9 @@ magnitude along the $z-$axis.
 To more thoroughly evaluate the LDO quadrature set in this test case, we will
 look more closely at the differences between the representative LDO flux and
 the three other quadrature types. Figure \ref{steel-fwd-diff-rel} shows three
-plots of relative
-flux differences; each plot compares the representative LDO quadrature set against one
-of the standard quadrature set types. The relative flux difference is calculated as
+plots of relative flux differences; each plot compares the representative LDO
+quadrature set against one of the standard quadrature set types. The relative
+flux difference is calculated as
 
 \begin{equation}
 \phi_{\mathrm{diff}} = 
@@ -453,26 +455,26 @@ of the standard quadrature set types. The relative flux difference is calculated
 \end{equation}
 
 \noindent where $\phi_{\mathrm{ref}}$ is the scalar flux calculated using the 
-standard quadrature set and is taken to be the reference value. For all three of the
-standard quadrature sets, the area of greatest agreement with the LDO scalar flux is
-towards the bottom of the problem geometry, with discrepancies growing along the
-$z-$axis. The greatest difference can be seen between the LDO and Galerkin quadrature 
-sets, while the LDO and QR quadrature sets agree best. The area of greatest
-discrepancy between the QR and LDO flux solutions is in the region of air just beyond
-the steel beam. We briefly note here that this particular deviation is most 
-likely due to issues in processing iron cross section data inherent to deterministic
-calculations.
+standard quadrature set and is taken to be the reference value. For all three
+of the standard quadrature sets, the area of greatest agreement with the LDO
+scalar flux is towards the bottom of the problem geometry, with discrepancies
+growing along the $z-$axis. The greatest difference can be seen between the LDO
+and Galerkin quadrature sets, while the LDO and QR quadrature sets agree best.
+The area of greatest discrepancy between the QR and LDO flux solutions is in
+the region of air just beyond the steel beam. We note here that this particular
+deviation is most likely due to issues in processing iron cross section data
+inherent to deterministic calculations \cite{wilsonslaybaugh}.
 
-Table \ref{steel-fwd-diff-table} lists the minimum, maximum, and average differences
-between various quadrature types for the flux slices plotted in Figure 
-\ref{steel-fwd-diff-rel}. We compare the representative LDO flux solution to the 
-solutions from the three standard representative quadrature types and also
-compare the Galerkin and LDFE results against the QR result. On average, the LDO
-forward flux solution matches the QR flux solution more closely than it matches either
-the Galerkin or LDFE flux solutions. Additionally, the LDO flux solution matches the
-QR flux solution more closely than do either of the Galerkin and LDFE flux solutions.
+Table \ref{steel-fwd-diff-table} lists the minimum, maximum, and average
+differences between various quadrature types for the flux slices plotted in
+Figure \ref{steel-fwd-diff-rel}. We compare the representative LDO flux
+solution to the solutions from the three standard representative quadrature
+types and also compare the Galerkin and LDFE results against the QR result. On
+average, the LDO forward flux solution matches the QR flux solution more
+closely than it matches either the Galerkin or LDFE flux solutions.
+Additionally, the LDO flux solution matches the QR flux solution more closely
+than do either of the Galerkin and LDFE flux solutions.
 
-% ~/research/dissertation/img/steel-plots/fwd-diff.txt
 \begin{table}[!hbt]
 \centering
 \caption{Steel plate forward scalar flux extremal and average relative differences.}
@@ -489,17 +491,17 @@ LDFE/QR             & 2\E{-7}             & 2.4807\E{-1}       & 9.632\E{-2}
 \end{tabular}
 \end{table}
 
-Looking at Figures \ref{steel-fwd-slices} and \ref{steel-fwd-diff-rel} we note that
-the forward scalar flux solutions from the LDO equations capture the same physical
-trends as the standard quadrature type solutions and also that the LDO flux solution
-most closely matches that using the QR quadrature set. Additionally, Table 
-\ref{steel-fwd-diff-table} shows an average difference of 2.2\% between the
-plotted flux solutions from the representative LDO and QR quadrature sets, which is 
-the lowest average difference seen in the comparisons here. As QR quadratures are 
-commonly used for Monte Carlo variance reduction parameter generation, the relative 
-agreement of the LDO scalar flux with the QR scalar flux motivates the exploration of 
-the use of LDO scalar flux solutions for Monte Carlo variance reduction parameter 
-generation.
+Looking at Figures \ref{steel-fwd-slices} and \ref{steel-fwd-diff-rel} we note
+that the forward scalar flux solutions from the LDO equations capture the same
+physical trends as the standard quadrature type solutions and also that the LDO
+flux solution most closely matches that using the QR quadrature set.
+Additionally, Table \ref{steel-fwd-diff-table} shows an average difference of
+2.2\% between the plotted flux solutions from the representative LDO and QR
+quadrature sets, which is the lowest average difference seen in the comparisons
+here. As QR quadratures are commonly used for Monte Carlo variance reduction
+parameter generation, the relative agreement of the LDO scalar flux with the QR
+scalar flux motivates the exploration of the use of LDO scalar flux solutions
+for Monte Carlo variance reduction parameter generation.
 
 \begin{figure}[!htb]
 \centering
@@ -551,10 +553,177 @@ generation.
 \end{figure}
 
 %---------------------------------------------------------------------------%%
-\subsection{Dog-Legged Void Neutron}
+\subsection{Dog-Legged Void Neutron (DLVN)}
+
+For the DLVN test case, we present flux slice plots for the same representative
+quadrature sets. Although the entire DLVN
+experimental geometry was simulated, here we plot only half of the
+configuration; this is the typical view of the benchmark seen in the
+literature.
+
+Figure \ref{dlvn-fwd-slices} shows the forward scalar flux for each of the
+representative quadrature sets at the midplane of $y = 27$ inches (68.58 cm).
+Each of the plots has outlines of the material boundaries with the detector
+locations delineated as well. As expected, the flux is highest at the neutron
+source and decreases as particles move through the experimental configuration.
+With this, we again look at the differences between the representative LDO flux
+and the three other quadrature types. 
+
+As with the previous test case, the flux differences 
+are calculated with Equation \ref{flux-diff}. In the DLVN scenario, the 
+differences stem from the source location. This is not surprising; the particle
+source here is approximately a point source and so these differences appear in
+the form of ray effects, where the discrete angles in the LDO quadrature set do
+not overlap with the angles in a given standard quadrature set. Similar to the
+steel plate in water test case, the LDO scalar flux best matches the QR scalar
+flux and the largest differences are seen between the LDO and Galerkin scalar
+flux plots. Looking at Figure \ref{dlvn-fwd-diff-gkn}, the areas of greatest
+discrepancy appear as ray effects; the relative coarseness of the
+representative Galerkin quadrature set angular mesh is likely the cause of
+this. This is visibly pronounced in the DLVN case because of the geometrically
+small particle source; it is also likely the source of the 
+LDO/Galerkin discrepancy seen above for the steel plate embedded in water, but
+ray effects are lessened in that scenario by the larger volumetric source.
+
+Lastly, it is instructive to compare the results of the forward deterministic
+scalar flux solutions with the experimentally measured flux values at the
+detector locations. Table \ref{dlvn-fwd-det} lists the experimentally measured
+\cite{dlvn1991} and deterministically calculated scalar flux values at the
+detector locations noted in Figure \ref{dlvn}. Table \ref{dlvn-fwd-det-diff}
+lists the percent differences between the deterministically calculated flux
+values and experimentally determined flux values with the lowest difference
+for each detector location emphasized.
+
+\begin{table}[!htb]
+\centering
+\caption{DLVN benchmark experimental and simulated scalar flux values [n/cm$^2$/s].}
+\label{dlvn-fwd-det}
+\begin{tabular}{l|ccccccc}
+              & Det. \#5       & Det. \#9       & Det. \#11      & Det. \#12
+              & Det. \#13      & Det. \#14 \\ \hline
+Exp. Flux     & 6.97\E{-8}     & 1.57\E{-7}     & 8.81\E{-6}     & 2.60\E{-7}
+              & 1.42\E{-6}     & 2.74\E{-7}     \rule{0pt}{2.6ex} \\
+QR            & 4.98\E{-8}     & 1.68\E{-7}     & 8.65\E{-5}     & 4.92\E{-7}
+              & 2.71\E{-6}     & 1.45\E{-6}     \\
+Galerkin      & 3.24\E{-8}     & 1.47\E{-7}     & 8.19\E{-5}     & 4.43\E{-7}
+              & 2.95\E{-6}     & 9.55\E{-7}     \\
+LDFE          & 5.12\E{-8}     & 1.76\E{-7}     & 9.17\E{-5}     & 5.14\E{-7}
+              & 2.93\E{-6}     & 1.47\E{-6}     \\
+LDO           & 4.56\E{-8}     & 1.39\E{-7}     & 7.88\E{-5}     & 4.28\E{-7}
+              & 2.37\E{-6}     & 1.28\E{-6}
+\end{tabular}
+\end{table}
+
+\begin{table}[!htb]
+\centering
+\caption{Percent differences between DLVN experimental and simulated scalar flux 
+         values.}
+\label{dlvn-fwd-det-diff}
+\begin{tabular}{l|ccccccc}
+              & Det. \#5       & Det. \#9        & Det. \#11       & Det. \#12
+              & Det. \#13      & Det. \#14       \\ \hline
+QR            & \textbf{25.58} & 6.89            & 881.94          & 89.09
+              & 90.63          & 428.81          \\
+Galerkin      & 53.48          & \textbf{6.37}   & 829.72          & 70.56
+              & 107.7         & \textbf{248.42} \\
+LDFE          & 26.61          & 12.3           & 940.41          & 97.75
+              & 106.4         & 435.01          \\
+LDO           & 34.61          & 11.2           & \textbf{794.75} & \textbf{64.46}
+              & \textbf{66.77} & 368.24
+\end{tabular}
+\end{table}
+
+Looking at Table \ref{dlvn-fwd-det-diff} we see that all of the calculated
+values fall outside of the experimental uncertainty of five percent
+\cite{dlvn1991}. The results from the LDO quadrature set most closely match the
+experimental results for half of the detector locations, which is better than
+any of the standard quadrature types tested here. Table
+\ref{dlvn-fwd-diff-table} lists the extreme and average values
+of the forward flux relative difference slices shown in Figure
+\ref{dlvn-fwd-diff-rel} with Galerkin/QR and LDFE/QR comparisons included for
+reference. We see that, on average, the LDO forward flux solution best matches
+the QR forward flux solution. However, in this case, the LDFE flux solution
+matches the QR flux solution better than the LDO flux solution on 
+average (5\% difference versus 8.4\% difference).
+
+\begin{table}[!hbt]
+\centering
+\caption{DLVN benchmark forward scalar flux extremal and average relative 
+         differences.}
+\label{dlvn-fwd-diff-table}
+\begin{tabular}{l|ccc}
+\textbf{Comparison} & \textbf{Min. Diff.} & \textbf{Max. Diff.} & \textbf{Avg. Diff.} 
+\\ \hline
+LDO/QR              & 2\E{-4}             & 8.3986\E{-1}  & 8.436\E{-2} \rule{0pt}{2.6ex} \\ 
+LDO/Galerkin        & 1\E{-6}             & 2.1395\E{0}   & 2.419\E{-1}      \\
+LDO/LDFE            & 3\E{-5}             & 8.7127\E{-1}  & 1.166\E{-1}      \\
+Galerkin/QR         & 3\E{-4}             & 6.3722\E{-1}  & 1.924\E{-1}      \\
+LDFE/QR             & 3\E{-5}             & 2.6688\E{-1}  & 5.047\E{-2}
+\end{tabular}
+\end{table}
+
+\begin{figure}[!htb]
+\centering
+\begin{subfigure}{0.4\textwidth}
+\includegraphics[max height=0.445\textheight]
+{img/dlvn-fwd-flux-qr04.eps}
+\subcaption{QR forward flux slice.}
+\end{subfigure} ~
+\begin{subfigure}{0.4\textwidth}
+\includegraphics[max height=0.445\textheight]
+{img/dlvn-fwd-flux-gkn04.eps}
+\subcaption{Galerkin forward flux slice.}
+\end{subfigure}
+\\
+\begin{subfigure}{0.4\textwidth}
+\includegraphics[max height=0.445\textheight]
+{img/dlvn-fwd-flux-ldfe01.eps}
+\subcaption{LDFE forward flux slice.}
+\end{subfigure} ~
+\begin{subfigure}{0.4\textwidth}
+\includegraphics[max height=0.445\textheight]
+{img/dlvn-fwd-flux-ldo11.eps}
+\subcaption{LDO forward flux slice.}
+\end{subfigure}
+\caption{DLVN benchmark forward scalar flux slices.}
+\label{dlvn-fwd-slices}
+\end{figure}
+
+\begin{figure}[!hbt]
+\centering
+\begin{subfigure}{0.4\textwidth}
+\includegraphics[max height=0.445\textheight]
+{img/dlvn-flux-diff-qr.eps}
+\subcaption{LDO/QR flux rel. diff.}
+\end{subfigure} ~
+\begin{subfigure}{0.4\textwidth}
+\includegraphics[max height=0.445\textheight]
+{img/dlvn-flux-diff-gkn.eps}
+\subcaption{LDO/Galerkin flux rel. diff.}
+\label{dlvn-fwd-diff-gkn}
+\end{subfigure}
+\\
+\begin{subfigure}{0.4\textwidth}
+\includegraphics[max height=0.445\textheight]
+{img/dlvn-flux-diff-ldfe.eps}
+\subcaption{LDO/LDFE flux rel. diff.}
+\end{subfigure}
+\caption{DLVN benchmark forward scalar flux relative difference slices.}
+\label{dlvn-fwd-diff-rel}
+\end{figure}
 
 %---------------------------------------------------------------------------%%
 \subsection{Summary}
+
+For the test cases here, we have compared the forward scalar flux solutions
+resultant from solving the LDO equations against those arising from solving the
+traditional discrete ordinates equations with a small variety of standard
+quadrature set types. In
+each test case, the results from solving the LDO equations best matched those
+from using the QR quadrature set in the traditional discrete ordinates
+formulation. Additionally, for the benchmark test case, the LDO equations
+produced results that were commensurate to those of all standard quadrature
+sets when the deterministic results were compared against experimental values.
 
 %---------------------------------------------------------------------------%%
 \section{Conclusions and Future Work}
@@ -562,7 +731,10 @@ generation.
 
 In this work we have seen that the LDO equations' scalar flux solutions are
 comparable to those of standard quadrature types. Of particular interest is
-the proximity of the LDO solutions to the QR solutions.
+the proximity of the LDO solutions to the QR solutions, as QR scalar flux
+solutions are commonly used for input in Monte Carlo variance reduction
+parameter generation and a future publication will assess the LDO equations'
+scalar flux solutions' efficacy as input for Monte Carlo calculation biasing.
 
 \pagebreak
 \section*{Acknowledgments}
@@ -589,4 +761,3 @@ agency thereof.
 \bibliography{ldo-deterministic}
 
 \end{document}
-
