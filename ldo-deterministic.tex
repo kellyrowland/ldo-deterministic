@@ -571,10 +571,10 @@ operator sizing for the two formulations in the next section.
 %%---------------------------------------------------------------------------%%
 \subsection{Operator Sizes}
 
-To evaluate the feasibility of constructing and solving the LDO equations in Denovo, it
-is pertinent to look at the dimensions of the operator forms of each equation. By doing
-this, we verify that the data structures for the discrete ordinates form can be 
-leveraged to solve the LDO equations.
+To evaluate the feasibility of constructing and solving the LDO equations in
+Denovo, it is pertinent to look at the dimensions of the operator forms of each
+equation. By doing this, we verify that the data structures for the discrete
+ordinates form can be leveraged to solve the LDO equations.
 
 The sizes used for the discrete ordinates equations are
 
@@ -624,8 +624,8 @@ Q &= (a \times 1),\      &Q_g      &= (NCE \times 1).
   \end{aligned}
 \end{equation*}
 
-\noindent Again, we define $a$ and $b$ as calculated in Equation \ref{eq:dims}. The
-operator sizes of the LDO formulation are then
+\noindent Again, we define $a$ and $b$ as calculated in Equation \ref{eq:dims}.
+The operator sizes of the LDO formulation are then
 
 \begin{alignat*}{3}
 \ve{I} = \ve{D} &=      (a \times a); \\
@@ -636,13 +636,11 @@ operator sizes of the LDO formulation are then
 Q &=                   (a \times 1),\ &Q_g      &= (NCE \times 1).
 \end{alignat*}
 
-\noindent In the LDO formulation, since the number of flux coefficients is tied to the
-degree of the subspace of spherical harmonics being integrated, $T = N$ and thus 
-$a = b$. With this in mind, we observe that the operator dimensions in the two 
-different formulations are compatible, which facilitates the use of the Exnihilo 
-framework to solve the LDO
-equations. However, as noted throughout the chapter, the LDO formulation
-requires particular treatment in several ways when forming and solving the equations.
+\noindent In the LDO formulation, since the number of flux coefficients is tied
+to the degree of the subspace of spherical harmonics being integrated, $T = N$
+and thus $a = b$. With this in mind, we observe that the operator dimensions in
+the two different formulations are compatible, which facilitates the use of the
+Exnihilo framework to solve the LDO equations.
 
 %%---------------------------------------------------------------------------%%
 \subsection{Scalar Flux}
