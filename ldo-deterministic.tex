@@ -280,12 +280,403 @@ equations can be summarized as:
 \end{enumerate}
 
 For a given fixed maximum degree of integration $L$, the corresponding number
-of ordinates in the LDO formulation is $(L+1)^2$.
+of ordinates in the LDO formulation is $(L+1)^2$. The LDO equations are
+developed with and must be evaluated at a fundamental system of points for the
+subspace of spherical harmonics. Ahrens provides references for examples of
+construction methods of these point systems \cite{ahrens}. Like Ahrens, we
+have chosen to use the extremal point sets developed and distributed by
+Womersley \cite{wom}.
 
 %%---------------------------------------------------------------------------%%
-% \section{Past Work}
-% replace this with a 'methodology' sort of section?
-% should probably have some Sn/LDO comparison section re: operator form, etc.
+\section{Methodology}
+
+First, a comparison of the traditional formulation of the discrete ordinates
+equations with the LDO equations is presented to demonstrate the difference 
+in implementing the two separate sets of equations. Then, a brief discussion of 
+scattering is given to highlight the specific differences between the two sets
+of equations with respect to how scattering is handled from the perspective of 
+implementation.
+
+%%---------------------------------------------------------------------------%%
+\subsection{Operator Form}
+\subsubsection{Traditional Discrete Ordinates Formulation}
+
+When considering deterministic methods, it is often instructive to think about
+the transport equation in operator form. The 
+operator form of the traditional discrete ordinates equations is
+
+\begin{align}
+\ve{L}\Psi &= \ve{MS}\Phi + Q, \\
+\Phi &= \ve{D}\Psi\: \text{ where } \ve{D} = \ve{M}^\top\ve{W}, \\
+\left(\ve{I} - \ve{DL}^{-1}\ve{MS}\right)\Phi &= \ve{DL}^{-1}Q.
+\label{l_inv}
+\end{align}
+
+\noindent The operators will be defined below, with the exception of $\ve{L}$,
+the transport operator. When solving Equation \ref{l_inv}, the operation
+$\ve{L}^{-1}$ is referred to as a ``sweep''; $\ve{L}$ is implicitly formed as a
+lower-left triangular matrix and is inverted by ``sweeping'' through the
+spatial mesh in the direction of particle flow \cite{exmm}.
+With this formulation, at each spatial unknown, with discrete energy groups
+defined over the range $g\in[0,G-1]$, we can write
+
+\begin{align}
+    \ve{L}
+    &\begin{pmatrix}
+      \Psi_0 \\
+      \Psi_1 \\
+      \vdots   \\
+      \Psi_{G-1}  \nonumber
+    \end{pmatrix} = \\
+    &\qquad\begin{pmatrix}
+      [\ve{M}] & 0 & 0 & 0 \\
+      0 & [\ve{M}] & 0 & 0 \\
+      0 & 0 & \ddots & \vdots \\
+      0 & 0 & \cdots & [\ve{M}] \\
+    \end{pmatrix}
+    %%
+    \begin{pmatrix}
+      [\ve{S}]_{0\sa0} & [\ve{S}]_{1\sa0} & \cdots & [\ve{S}]_{G-1\sa0} \\
+      [\ve{S}]_{0\sa1} & [\ve{S}]_{1\sa1} & \cdots & [\ve{S}]_{G-1\sa1} \\
+      \vdots & \vdots & \ddots & \vdots \\
+      [\ve{S}]_{0\sa G-1} & [\ve{S}]_{1\sa G-1} & \cdots & [\ve{S}]_{G-1\sa G-1}
+    \end{pmatrix}
+    \begin{pmatrix}
+      \Phi_0 \\
+      \Phi_1 \\
+      \vdots   \\
+      \Phi_{G-1}
+    \end{pmatrix}
+    %%
+    \\&\fq\fq\fq\qquad\qquad\qquad+
+    \begin{pmatrix}
+      Q_0 \\
+      Q_1 \\
+      \vdots  \\
+      Q_{G-1}
+    \end{pmatrix}, \nonumber
+    \label{eq:matrix-transport}
+\end{align}
+
+\noindent where the notation $[\cdot]_g$ indicates a block matrix over all
+unknowns for a single group.  
+
+Here, the angular flux vector for group $g$ over angles $1,\ldots,N$ is defined
+as
+
+\begin{equation}
+  \Psi_g = \begin{pmatrix}
+    \psi^g_1 & \psi^g_2 & \psi^g_3 & \cdots \psi^g_N
+  \end{pmatrix}^\top,
+\label{psiv}
+\end{equation}
+
+\noindent with the external source vector $Q_g$ defined similarly. The operator
+$\ve{M}$ is the ``moment-to-discrete'' matrix and is 
+used to project harmonic moments onto discrete angle space. It is defined as
+
+\begin{equation}
+[\ve{M}] = \begin{pmatrix}
+\Ye{00}{1} & \Ye{10}{1} & \Yo{11}{1} & \Ye{11}{1} & \cdots & \Yo{PP}{1} & \Ye{PP}{1} \\
+\Ye{00}{2} & \Ye{10}{2} & \Yo{11}{2} & \Ye{11}{2} & \cdots & \Yo{PP}{2} & \Ye{PP}{2} \\
+\Ye{00}{3} & \Ye{10}{3} & \Yo{11}{3} & \Ye{11}{3} & \cdots & \Yo{PP}{3} & \Ye{PP}{3} \\
+\vdots     & \vdots     & \vdots     & \vdots     & \ddots & \vdots     & \vdots     \\
+\Ye{00}{N} & \Ye{10}{N} & \Yo{11}{N} & \Ye{11}{N} & \cdots & \Yo{PP}{N} & \Ye{PP}{N}
+  \end{pmatrix}\:.
+\label{mtod}
+\end{equation}
+
+\noindent Note that $[\ve{M}]$ is dependent only on angle and is therefore the
+same for each energy group. The operator $\ve{D}$ is the ``discrete-to-moment''
+matrix; it is used to calculate the moments of the angular flux from discrete
+angular flux values. $\ve{D}$ is calculated as $\ve{M}^\top\ve{W}$, where
+$\ve{W}$ is a diagonal matrix of quadrature weights \cite{exmm}, and it is
+written as
+
+\begin{equation}
+  [\ve{D}] = \begin{pmatrix}
+    w_1\Ye{00}{1} & w_2\Ye{00}{2} & w_3\Ye{00}{3} & \cdots & w_N\Ye{00}{N} \\ 
+    w_1\Ye{10}{1} & w_2\Ye{10}{2} & w_3\Ye{10}{3} & \cdots & w_N\Ye{10}{N} \\
+    w_1\Yo{11}{1} & w_2\Yo{11}{2} & w_3\Yo{11}{3} & \cdots & w_N\Yo{11}{N} \\
+    w_1\Ye{11}{1} & w_2\Ye{11}{2} & w_3\Ye{11}{3} & \cdots & w_N\Ye{11}{N} \\
+    \vdots        & \vdots        & \vdots        & \ddots & \vdots        \\
+    w_1\Yo{PP}{1} & w_2\Yo{PP}{2} & w_3\Yo{PP}{3} & \cdots & w_N\Yo{PP}{N} \\
+    w_1\Ye{PP}{1} & w_2\Ye{PP}{2} & w_3\Ye{PP}{3} & \cdots & w_N\Ye{PP}{N}
+  \end{pmatrix}\:.
+\end{equation}
+
+\noindent Like $[\ve{M}]$, $[\ve{D}]$ is dependent only on angle and is the
+same for each energy group. The scattering cross section matrices are defined
+as
+
+\begin{equation}
+  [\ve{S}]_{g'\rightarrow g} = \begin{pmatrix}
+    \Sigg{0} & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & \Sigg{1} & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & \Sigg{1} & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & \Sigg{1} & 0 & 0 & 0 \\
+    0 & 0 & 0 & 0 & \ddots   & 0 & 0 \\
+    0 & 0 & 0 & 0 & 0 & \Sigg{P} & 0 \\
+    0 & 0 & 0 & 0 & 0 & 0 & \Sigg{P}
+  \end{pmatrix}\:.
+\label{denovo_scatter}
+\end{equation}
+
+\noindent Finally, the flux moment vectors are defined as
+
+\begin{align}
+  \Phi_g = \begin{pmatrix}
+    \even_{00} & \even_{10} & \odd_{11} & \even_{11} & \even_{20}
+    & \cdots & \odd_{PP} & \even_{PP}
+  \end{pmatrix}^\top\:,
+\end{align}
+
+\noindent where the flux moments are evaluated as listed in Equation
+\ref{sph_harm_exp}. As we will describe below in Section \ref{sec:flux}, the 
+goal of solving the discrete ordinates equations is to solve for these flux
+moments and then use the flux moments to calculate the scalar flux. In summary,
+the traditional discrete ordinates discretizations are captured in the
+preceding matrices; they can be used to analyze behavior and performance and
+can be compared against other discretizations.
+
+%%---------------------------------------------------------------------------%%
+\subsubsection{LDO Formulation}
+
+Although the LDO equations are formally the same as the traditional \sn\
+equations, there are several key differences between the sets of equations.
+Here we present and discuss the operator form of the LDO equations as a
+comparison to the operator form of the discrete ordinates
+equations shown above. The operator form of the LDO equations is
+
+\begin{align}
+\ve{L}\Psi &= \ve{\tilde{S}J}\Psi + Q, \\
+\left(\ve{I} - \ve{L^{-1} \tilde{S}J}\right)\Psi &= \ve{L^{-1}}Q.
+\end{align}
+
+\noindent Letting $\ve{D} \equiv \ve{I}$ with 
+$\ve{L^{-1}} = \ve{I}\ve{L^{-1}} = \ve{D}\ve{L^{-1}}$, we then have
+
+\begin{equation}
+\left(\ve{I} - \ve{D L^{-1} \tilde{S}J}\right)\Psi = \ve{D L^{-1}}Q.
+\label{ldo_op}
+\end{equation}
+
+\noindent Equation \ref{ldo_op} is in the same form as Equation \ref{l_inv},
+so we can apply the same solution techniques to both sets of equations.
+
+In contrast to Equation \ref{l_inv}, however, Equation \ref{ldo_op} contains
+the Lagrange interpolation matrix $\ve{J}$ rather than the moment-to-discrete
+operator $\ve{M}$, and $\ve{\tilde{S}}$ contains the new formulation of
+scattering cross sections specific to the LDO equations. Additionally, when
+solving the LDO equations, we are solving for the angular flux coefficients
+rather than flux moments. Now, at each spatial unknown, with energy groups 
+again defined over the range $g\in[0,G-1]$, we have
+
+\begin{align}
+    \ve{L}
+    &\begin{pmatrix}
+      \Psi_0 \\
+      \Psi_1 \\
+      \vdots   \\
+      \Psi_{G-1}  \nonumber
+    \end{pmatrix} = \\
+    &\qquad\begin{pmatrix}
+      [\ve{\st}]_{0\sa 0}   & [\ve{\st}]_{1\sa0}    & \cdots & [\ve{\st}]_{G-1\sa0} \\
+      [\ve{\st}]_{0\sa 1}   & [\ve{\st}]_{1\sa1}    & \cdots & [\ve{\st}]_{G-1\sa1} \\
+      \vdots                & \vdots                & \ddots & \vdots               \\
+      [\ve{\st}]_{0\sa G-1} & [\ve{\st}]_{1\sa G-1} & \cdots & [\ve{\st}]_{G-1 \sa G-1}
+    \end{pmatrix}
+    \begin{pmatrix}
+      [\ve{J}] & 0 & 0 & 0 \\
+      0 & [\ve{J}] & 0 & 0 \\
+      0 & 0 & \ddots & \vdots \\
+      0 & 0 & \cdots & [\ve{J}] \\
+    \end{pmatrix}
+    \begin{pmatrix}
+      \Psi_0 \\
+      \Psi_1 \\
+      \vdots   \\
+      \Psi_{G-1}
+    \end{pmatrix}
+    %%
+    \\&\fq\fq\fq\qquad\qquad\quad+
+    \begin{pmatrix}
+      Q_0 \\
+      Q_1 \\
+      \vdots  \\
+      Q_{G-1} \nonumber
+    \end{pmatrix},
+\end{align}
+
+\noindent where the block matrix notation still holds. The angular flux
+coefficient vector and external source vector are formed as listed in Equation
+\ref{psiv}. The operator [$\ve{J}$] performs the Lagrange interpolation. It is
+constructed as the inverse of the Gram matrix, $\ve{G}$, which is calculated as
+
+\begin{equation}
+  \ve{G} = \begin{pmatrix}
+    \Gij{1}{1} & \Gij{1}{2} & \cdots & \Gij{1}{N} \\
+    \Gij{2}{1} & \Gij{2}{2} & \cdots & \Gij{2}{N} \\
+    \vdots     & \vdots     & \ddots & \vdots     \\
+    \Gij{N}{1} & \Gij{N}{2} & \cdots & \Gij{N}{N} \\
+  \end{pmatrix}.
+\label{gram}
+\end{equation}
+
+\noindent Like $[\ve{M}]$ and $[\ve{D}]$ in the traditional discrete ordinates
+formulation, $[\ve{J}]$ depends only on angle and is the same for all 
+energy groups. Finally, the new scattering cross section matrix is:
+
+\begin{equation}
+  [\ve{\tilde{S}}]_{g'\rightarrow g} = \begin{pmatrix}
+    \Sij{1}{1} & \Sij{1}{2} & \cdots & \Sij{1}{N} \\
+    \Sij{2}{1} & \Sij{2}{2} & \cdots & \Sij{2}{N} \\
+    \vdots     & \vdots     & \ddots & \vdots     \\
+    \Sij{N}{1} & \Sij{N}{2} & \cdots & \Sij{N}{N} \\
+  \end{pmatrix},
+\label{ldo_scatter}
+\end{equation}
+
+\noindent where each element of $[\ve{\tilde{S}}]_{g'\rightarrow g}$ is
+calculated as
+
+\begin{equation}
+\Sij{n}{m} = \sum_{\ell=0}^L \frac{2\ell +1}{4\pi}\Sigg{\ell}
+P_{\ell}(\bo_n \cdot\bo_m).
+\label{eq:ldosig}
+\end{equation}
+
+\noindent In Equation \ref{eq:ldosig}, $\Sigg{\ell}$ are the same cross section 
+coefficients that are stored in the traditional scattering matrix given in
+Equation \ref{denovo_scatter}. We again note that the operator $\ve{D}$ is
+replaced by the identity matrix in the LDO formulation; incorporation of the
+quadrature set weights in the LDO equations is 
+discussed in Section \ref{sec:flux}. In the LDO formulation Equations
+\ref{gram} -- \ref{eq:ldosig}, $L$, the order at which the scattering expansion
+is truncated, is arbitrary. However, values of $\Sigg{\ell}$ must exist for all
+values of $\ell \in [0,L]$, so we typically set $L$ equal to the same 
+scattering expansion \pn\ order $P$ in Equations
+\ref{mtod} -- \ref{denovo_scatter}.
+
+To recap, space and energy are handled in the same way between the two
+different formulations, while angular discretization and scattering are handled
+differently. The traditional discrete ordinates formulation uses the $\ve{M}$
+and $\ve{D}$ operators to project harmonic moments onto discrete angle space
+and to calculate moments of the angular flux from discrete angular flux values,
+respectively. In contrast, the LDO formulation employs the interpolation matrix
+$\ve{J}$ and the scattering matrix $\ve{\tilde{S}}$ to capture angular
+information in the problem. We will look at the
+operator sizing for the two formulations in the next section.
+
+%%---------------------------------------------------------------------------%%
+\subsection{Operator Sizes}
+
+To evaluate the feasibility of constructing and solving the LDO equations in Denovo, it
+is pertinent to look at the dimensions of the operator forms of each equation. By doing
+this, we verify that the data structures for the discrete ordinates form can be 
+leveraged to solve the LDO equations.
+
+The sizes used for the discrete ordinates equations are
+
+\begin{equation*}
+  \begin{aligned}
+    G &= \text{number of energy groups},\\
+    N &= \text{number of discrete angles},\\
+    P &= \text{scattering expansion $P_N$ order},\\
+    T &= (P+1)^2 = \text{number of flux moments},\\
+    C &= \text{number of spatial cells},\\
+    E &= \text{number of unknowns per spatial cell}.
+  \end{aligned}
+\end{equation*}
+
+\noindent Now, we define
+
+\begin{equation}
+  a = G \times N \times C \times E\ \text{ and }\
+  b = G \times T \times C \times E.
+\label{eq:dims}
+\end{equation}
+
+\noindent The operator sizes of the original formulation are then
+
+\begin{alignat*}{3}
+\ve{I} &= (a \times a);  \\
+\ve{D} &= (b \times a),\ &[\ve{D}] &= (TCE \times NCE); \\
+\ve{L} = \ve{L^{-1}} &= (a \times a);  \\
+\ve{M} &= (a \times b),\ &[\ve{M}] &= (NCE \times TCE); \\
+\ve{S} &= (b \times b),\ &[\ve{S}] &= (TCE \times TCE); \\
+\Phi &= (b \times 1),\   &\Phi_g   &= (TCE \times 1); \\
+\Psi &= (a \times 1),\   &\Psi_g   &= (NCE \times 1); \\
+Q &= (a \times 1),\      &Q_g      &= (NCE \times 1).
+\end{alignat*}
+
+\noindent The sizes used in the LDO formulation are
+
+\begin{equation*}
+  \begin{aligned}
+    G &= \text{number of energy groups},\\
+    H &= \text{degree of spherical harmonics subspace to integrate},\\
+    N &= (H+1)^2 = \text{number of discrete angles},\\
+    P &= \text{scattering expansion $P_N$ order},\\
+    T &= (H+1)^2 = \text{number of angular flux coefficients},\\
+    C &= \text{number of spatial cells},\\
+    E &= \text{number of unknowns per spatial cell}.
+  \end{aligned}
+\end{equation*}
+
+\noindent Again, we define $a$ and $b$ as calculated in Equation \ref{eq:dims}. The
+operator sizes of the LDO formulation are then
+
+\begin{alignat*}{3}
+\ve{I} = \ve{D} &=      (a \times a); \\
+\ve{L} = \ve{L^{-1}} &= (a \times a); \\
+\ve{\tilde{S}} &=      (a \times a),\ &[\ve{\tilde{S}}] &= (NCE \times NCE); \\
+\ve{J} &=              (a \times a),\ &[\ve{J}] &= (NCE \times NCE); \\
+\Psi &=                (a \times 1),\ &\Psi_g   &= (NCE \times 1); \\
+Q &=                   (a \times 1),\ &Q_g      &= (NCE \times 1).
+\end{alignat*}
+
+\noindent In the LDO formulation, since the number of flux coefficients is tied to the
+degree of the subspace of spherical harmonics being integrated, $T = N$ and thus 
+$a = b$. With this in mind, we observe that the operator dimensions in the two 
+different formulations are compatible, which facilitates the use of the Exnihilo 
+framework to solve the LDO
+equations. However, as noted throughout the chapter, the LDO formulation
+requires particular treatment in several ways when forming and solving the equations.
+
+%%---------------------------------------------------------------------------%%
+\subsection{Scalar Flux}
+\label{sec:flux}
+
+In the traditional \sn\ equations, the scalar flux is
+defined as the zeroth moment of the angular flux \cite{exmm}. In Denovo, it is
+calculated for a given spatial cell and energy group as
+
+\begin{equation}
+\phi = \int_{4\pi}\psi d\bo = \sqrt{4\pi}\int_{4\pi}Y_{00}^{e}\psi d\bo
+     = \sqrt{4\pi}\even_{00}.
+\label{eq:scalar_flux}
+\end{equation}
+
+\noindent Thus, based on Equation \ref{eq:scalar_flux}, Denovo only retrieves
+the first entry of the angular flux moment storage vector when called upon to
+calculate the scalar flux.
+
+When solving the LDO equations, the scalar flux is calculated as a 
+weighted sum of the angular flux moments:
+
+\begin{equation}
+\phi = \int_{4\pi}\psi d\bo = \sum_{n=1}^{N}w_n\psi_n,
+\label{eq:scalar_flux_ldo}
+\end{equation}
+
+\noindent where the weights are those associated with the particular quadrature
+set and the angular flux coefficients are those values stored in the Denovo
+flux moment vector. In order to keep the Denovo scalar flux output 
+functionality consistent between LDO quadratures and other quadrature sets, the
+scalar flux value calculated in Equation \ref{eq:scalar_flux_ldo} is multiplied
+by $\tfrac{1}{4\pi}$ and written into the first entry of the flux moment
+storage vector after the calculation has finished.
 
 %%---------------------------------------------------------------------------%%
 \section{Test Cases and Run Parameters}
