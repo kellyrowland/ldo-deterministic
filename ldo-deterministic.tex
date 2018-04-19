@@ -41,7 +41,7 @@
 %enable figures
 \usepackage{amsmath}
 \usepackage{multirow}
-\usepackage{graphicx}
+\usepackage[dvipdfmx]{graphicx}
 
 %enables double spaced footnotes
 \usepackage[]{footmisc}
@@ -79,6 +79,7 @@
 \usepackage{mathrsfs}
 \usepackage[pdftex]{hyperref}
 \usepackage{stmaryrd} % for short right arrow
+\usepackage[export]{adjustbox} % to use max height in includegraphics
 
 %-------------
 \DeclareMathOperator{\diag}{diag}
@@ -428,10 +429,131 @@ than the \sn\ order.
 \section{Results}
 \label{sec:results}
 
+%---------------------------------------------------------------------------%%
 \subsection{Steel Plate Embedded in Water}
 
+Figure \ref{steel-fwd-slices} shows a representative forward scalar flux slice
+plot for each quadrature type. Each of the flux slices is at the midplane of
+the $y-$dimension such that $y = 25$ cm. The geometry/material borders are
+outlined on each plot as well. All plots show the same expected result -- the
+scalar flux is highest in the source region and drops off by orders of
+magnitude along the $z-$axis.
+
+To more thoroughly evaluate the LDO quadrature set in this test case, we will
+look more closely at the differences between the representative LDO flux and
+the three other quadrature types. Figure \ref{steel-fwd-diff-rel} shows three
+plots of relative
+flux differences; each plot compares the representative LDO quadrature set against one
+of the standard quadrature set types. The relative flux difference is calculated as
+
+\begin{equation}
+\phi_{\mathrm{diff}} = 
+\frac{\left|\phi_{\mathrm{LDO}}-\phi_{\mathrm{ref}}\right|}{\phi_{\mathrm{ref}}}
+\label{flux-diff}
+\end{equation}
+
+\noindent where $\phi_{\mathrm{ref}}$ is the scalar flux calculated using the 
+standard quadrature set and is taken to be the reference value. For all three of the
+standard quadrature sets, the area of greatest agreement with the LDO scalar flux is
+towards the bottom of the problem geometry, with discrepancies growing along the
+$z-$axis. The greatest difference can be seen between the LDO and Galerkin quadrature 
+sets, while the LDO and QR quadrature sets agree best. The area of greatest
+discrepancy between the QR and LDO flux solutions is in the region of air just beyond
+the steel beam. We briefly note here that this particular deviation is most 
+likely due to issues in processing iron cross section data inherent to deterministic
+calculations.
+
+Table \ref{steel-fwd-diff-table} lists the minimum, maximum, and average differences
+between various quadrature types for the flux slices plotted in Figure 
+\ref{steel-fwd-diff-rel}. We compare the representative LDO flux solution to the 
+solutions from the three standard representative quadrature types and also
+compare the Galerkin and LDFE results against the QR result. On average, the LDO
+forward flux solution matches the QR flux solution more closely than it matches either
+the Galerkin or LDFE flux solutions. Additionally, the LDO flux solution matches the
+QR flux solution more closely than do either of the Galerkin and LDFE flux solutions.
+
+% ~/research/dissertation/img/steel-plots/fwd-diff.txt
+\begin{table}[!hbt]
+\centering
+\caption{Steel plate forward scalar flux extremal and average relative differences.}
+\label{steel-fwd-diff-table}
+\begin{tabular}{l|ccc}
+\textbf{Comparison} & \textbf{Min. Diff.} & \textbf{Max. Diff.} & \textbf{Avg. Diff.} 
+\\ \hline
+LDO/QR              & 6\E{-6}             & 1.0913\E{-1}       & 2.206\E{-2}
+\rule{0pt}{2.6ex} \\ 
+LDO/Galerkin        & 2\E{-5}             & 4.5132\E{0}        & 9.303\E{-1}      \\
+LDO/LDFE            & 5\E{-7}             & 2.7850\E{-1}       & 9.418\E{-2}      \\
+Galerkin/QR         & 3\E{-5}             & 8.2364\E{-1}       & 2.903\E{-1}      \\
+LDFE/QR             & 2\E{-7}             & 2.4807\E{-1}       & 9.632\E{-2}
+\end{tabular}
+\end{table}
+
+Looking at Figures \ref{steel-fwd-slices} and \ref{steel-fwd-diff-rel} we note that
+the forward scalar flux solutions from the LDO equations capture the same physical
+trends as the standard quadrature type solutions and also that the LDO flux solution
+most closely matches that using the QR quadrature set. Additionally, Table 
+\ref{steel-fwd-diff-table} shows an average difference of 2.2\% between the
+plotted flux solutions from the representative LDO and QR quadrature sets, which is 
+the lowest average difference seen in the comparisons here. As QR quadratures are 
+commonly used for Monte Carlo variance reduction parameter generation, the relative 
+agreement of the LDO scalar flux with the QR scalar flux motivates the exploration of 
+the use of LDO scalar flux solutions for Monte Carlo variance reduction parameter 
+generation.
+
+\begin{figure}[!htb]
+\centering
+\begin{subfigure}{0.4\textwidth}
+\includegraphics[max height=0.445\textheight]
+{img/steel-fwd-flux-qr04.eps}
+\subcaption{QR forward flux slice.}
+\end{subfigure} ~
+\begin{subfigure}{0.4\textwidth}
+\includegraphics[max height=0.445\textheight]
+{img/steel-fwd-flux-gkn04.eps}
+\subcaption{Galerkin forward flux slice.}
+\end{subfigure}
+\\
+\begin{subfigure}{0.4\textwidth}
+\includegraphics[max height=0.445\textheight]
+{img/steel-fwd-flux-ldfe01.eps}
+\subcaption{LDFE forward flux slice.}
+\end{subfigure} ~
+\begin{subfigure}{0.4\textwidth}
+\includegraphics[max height=0.445\textheight]
+{img/steel-fwd-flux-ldo11.eps}
+\subcaption{LDO forward flux slice.}
+\end{subfigure}
+\caption{Steel plate forward scalar flux slices.}
+\label{steel-fwd-slices}
+\end{figure}
+
+\begin{figure}[!htb]
+\centering
+\begin{subfigure}{0.4\textwidth}
+\includegraphics[max height=0.445\textheight]
+{img/steel-flux-diff-qr.eps}
+\subcaption{LDO/QR flux rel. diff.}
+\end{subfigure} ~
+\begin{subfigure}{0.4\textwidth}
+\includegraphics[max height=0.445\textheight]
+{img/steel-flux-diff-gkn.eps}
+\subcaption{LDO/Galerkin flux rel. diff.}
+\end{subfigure}
+\\
+\begin{subfigure}{0.4\textwidth}
+\includegraphics[max height=0.445\textheight]
+{img/steel-flux-diff-ldfe.eps}
+\subcaption{LDO/LDFE flux rel. diff.}
+\end{subfigure}
+\caption{Steel plate forward scalar flux relative difference slices.}
+\label{steel-fwd-diff-rel}
+\end{figure}
+
+%---------------------------------------------------------------------------%%
 \subsection{Dog-Legged Void Neutron}
 
+%---------------------------------------------------------------------------%%
 \subsection{Summary}
 
 %---------------------------------------------------------------------------%%
