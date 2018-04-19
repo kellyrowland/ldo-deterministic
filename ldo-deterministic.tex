@@ -78,6 +78,7 @@
 \usepackage{xspace}
 \usepackage{mathrsfs}
 \usepackage[pdftex]{hyperref}
+\usepackage{stmaryrd} % for short right arrow
 
 %-------------
 \DeclareMathOperator{\diag}{diag}
@@ -169,18 +170,23 @@ With the recent rise in high-performance computing, large-scale
 three-dimensional neutral particle transport is becoming more and more
 commonplace. One usual solution approach is to discretize all of the
 independent variables of the steady-state Boltzmann transport equation and
-solve the resultant systems of equations.
+solve the resultant systems of equations. The classic discrete ordinates (\sn)
+method is well-known and commonly used in deterministic transport, but it
+frequently suffers from inaccuracies in scalar particle flux solutions
+brought about by angular discretization (termed ``ray effects'').
 
+The Lagrange Discrete Ordinates (LDO) equations, developed by Ahrens
+\cite{ahrens}, are formally equivalent to the classic \sn\ equations and have
+been shown to mitigate ray effects at high angular resolutions.
 In this paper we will explore and assess deterministic scalar flux solutions
-from the Lagrange Discrete Ordinates (LDO) equations, which have never before
+from the LDO equations, which have never before
 been implemented in a full-scale radiation transport framework.
 
-\begin{itemize}
-\item{3D neutron transport is on the rise with HPC}
-\item{Discrete ordinates is a common solution approach}
-\item{Ray effects are a prevalent issue in deterministic scalar flux solutions}
-\item{LDO equations treat scattering differently}
-\end{itemize}
+The remainder of the paper is structured as follows: background information
+regarding the main components of this work is given, followed by descriptions
+of the test case scenarios employed and the choices made in parameter selection
+for the calculations performed. Numerical results are presented and discussed
+and we close the paper with concluding remarks and suggestions for future work.
 
 %%---------------------------------------------------------------------------%%
 \section{Background}
@@ -189,7 +195,10 @@ been implemented in a full-scale radiation transport framework.
 We start by giving appropriate background information on constituent components
 of this work. Primarily, we will briefly cover the Denovo radiation transport
 solver and give a short introduction to the Lagrange Discrete Ordinates (LDO)
-equations.
+equations. As one of the points of interest in the LDO equations is their
+unique handling of angular discretization and particle scattering, we will
+focus discussions in such a way as to highlight the actualities and
+implications of this difference.
 
 %%---------------------------------------------------------------------------%%
 \subsection{Denovo}
@@ -209,7 +218,31 @@ Boltzmann transport equation solved in Denovo is
 
 \noindent where $\psi$ denotes the angular flux, $\vecr$ is the particle
 position in Cartesian coordinates, $E$ is the energy of the particle,
-and $\bo$ is the unit vector of direction of travel of the particle.
+and $\bo$ is the unit vector of direction of travel of the particle. As it is
+pertinent to the material presented here, we will briefly note the discrete
+ordinates method employed in Denovo for angular discretization; full detail may
+be found in Reference \cite{denovo}.
+
+The \sn\ approximation used in Denovo is
+
+\begin{multline}
+\bo_a \cdot \nabla \psi_a^g(\vecr) + \Sigma_t^g(\vecr)\psi_a^g(\vecr) = \\
+\sum_{g'=0}^{G}\sum_{\ell=0}^{N}\Sigma_{s,\ell}^{g'\sa g}(\vecr)
+\bigg[\Ye{\ell 0}{a}\phi_{\ell 0}^{g'}(\vecr) + \sum_{m=1}^{\ell}
+\bigg(\Ye{\ell m}{a}\phi_{\ell m}^{g'}(\vecr) \\
+ + \Yo{\ell m}{n}\vartheta_{\ell m}^{g'}(\vecr)\bigg)\bigg]
++ Q_a^g(\vecr),
+\label{eq:sn}
+\end{multline}
+
+\noindent where a standard multigroup energy approximation is used. $\phi$ and
+$\vartheta$ are the moments of the angular flux and the angles are integrated
+by a quadrature rule such that
+
+\begin{equation}
+\int_{4\pi} d\bo = \sum_{a=1}^{n}w_a = 4\pi.
+\label{eq:quadrule}
+\end{equation}
 
 %%---------------------------------------------------------------------------%%
 \subsection{Lagrange Discrete Ordinates (LDO) Equations}
