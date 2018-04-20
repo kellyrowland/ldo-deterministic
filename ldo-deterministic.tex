@@ -785,6 +785,43 @@ was constructed to represent the entire experimental geometry configuration.
 Vacuum boundary conditions were applied to the outside of the entire problem.
 
 %%---------------------------------------------------------------------------%%
+\subsection{Simplified Portal Monitor}
+
+The final problem described here is a simplified portal monitor scenario.
+Portal monitors are large detector panels used to screen cargo for illicit
+radioactive materials. The problem models a cargo container holding a Ba-133
+photon point source and large blocks of homogenized iron and polyethylene. 
+The geometry and material configuration used in this test is the same as the
+example problem listed in Section 7.2 of the ADVANTG technical report
+\cite{advantg}. Diagrams of the simplified portal monitor problem are shown in
+Figure \ref{p1}.
+
+\begin{figure}[!htb]
+\centering
+\begin{subfigure}{0.475\textwidth}
+\includegraphics[width=\textwidth]{img/portal1.png}
+\end{subfigure}
+\begin{subfigure}{0.475\textwidth}
+\includegraphics[width=\textwidth]{img/portal2.png}
+\end{subfigure}
+\caption{Top and side views of simplified portal problem \cite{advantg}.}
+\label{p1}
+\end{figure}
+
+In Figure \ref{p1}, the different colors represent different materials. The NaI
+detectors are red and the gray material is concrete. The two types of material
+blocks are iron, shown in green, and polyethylene, shown in white. The steel
+cargo container surrounds the particle source and material blocks and is a
+semitransparent blue.
+
+A non-uniform Cartesian mesh that captures all of the problem's material
+boundaries was constructed for this simulation. The voxels are nominally 10 cm
+thick within the cargo container. Additional mesh planes parallel to the
+$x-$axis were added to the gaps between the homogenized iron and polyethylene
+blocks \cite{advantg}. Vacuum boundary conditions are present at all problem
+edges.
+
+%%---------------------------------------------------------------------------%%
 \subsection{Calculation Parameters}
 
 All of the deterministic calculations used 32 processes on a 2.8GHz AMD 
@@ -798,9 +835,13 @@ algorithm for high parallel efficiency in calculating transport sweeps
 \cite{denovo}; the aforementioned block structure was chosen to achieve the
 same parallel performance among all test case deterministic simulations. 
 
-The two test cases use the same coarse energy group structure specified in 
-the ``27n19g'' library; the groups in this library are listed in Table A-1 of
-Appendix A of the ADVANTG technical report \cite{advantg}. Because 
+The two neutron transport test cases use the same coarse energy group structure
+specified in  the ``27n19g'' library; the groups in this library are listed in 
+Table A-1 of Appendix A of the ADVANTG technical report \cite{advantg}.
+The simplified portal monitor scenario uses a truncated version of the library;
+the highest energy emission line of Ba-133 is 383.8 keV, so the highest energy
+group of the calculations was set to group number 41, which has an upper energy
+of 400 keV \cite{advantg}. Because 
 energy discretization is treated the same way between the traditional discrete
 ordinates formulation and the LDO equations, it was assumed that energy group 
 structure would not greatly impact the comparative results.
@@ -1103,6 +1144,130 @@ LDFE/QR             & 3\E{-5}             & 2.6688\E{-1}  & 5.047\E{-2}
 \end{subfigure}
 \caption{DLVN benchmark forward scalar flux relative difference slices.}
 \label{dlvn-fwd-diff-rel}
+\end{figure}
+
+\FloatBarrier
+%%---------------------------------------------------------------------------%%
+\subsection{Simplified Portal Monitor}
+
+Lastly, we look at the simplified portal monitor problem with the small photon
+source. Of the test cases presented here, the forward solutions differ most
+greatly for this problem. Figure \ref{cargo-fwd-slices} shows forward scalar
+flux solutions for the representative quadrature sets with the material
+pallets, detector array, and shipping container outlines overlaid on the plots.
+Flux slices are plotted at the midplane of $z = 243.84$ cm (96 inches). All of
+the flux solutions display ray effects as a result of the streaming paths
+created by the material variation of the pallets inside of the shipping
+container.
+
+As with the previous test cases, we look at the differences between the 
+representative LDO flux and the three other quadrature types. In Figure
+\ref{cargo-fwd-diff-rel}, the differences largely appear as ray effects. This
+is unsurprising given the combination of the small volume of the photon 
+source in the problem and the inherent difficulty of accurately simulating
+particle streaming in deterministic calculations. Again we see that the LDO
+scalar flux solution exhibits strong disagreement with the Galerkin scalar
+flux solution. The LDO/QR and LDO/LDFE comparison plots show discrepancies of
+similar orders of magnitude and all of the relative difference plots exhibit
+the greatest difference along the $y-z$ plane streaming pathway located in the
+center of the shipping container.
+
+Table \ref{cargo-fwd-diff-table} lists the minimum, maximum, and average values
+of the relative differences in the forward scalar flux solutions, shown in
+Figure \ref{cargo-fwd-diff-rel}. As with all of the previous cases, comparisons
+between the QR flux solution and the Galerkin and LDFE flux solutions are
+included for reference. None of the flux solutions in this case show
+particularly good agreement on average; the closest solutions are the LDFE and
+QR flux solutions which have an average difference of about 24\%. Of the three
+standard quadrature types, the LDO forward flux solution matches the QR forward
+flux solution most closely.
+Given the localized small volumetric particle source used in the problem in 
+combination with the streaming pathways created by the scenario's material and
+geometry configuration, it is unsurprising that the forward flux solutions
+generated with the various representative quadrature sets show only fair
+agreement.
+
+\begin{table}[!hbt]
+\centering
+\caption{Portal monitor forward scalar flux extremal and average relative 
+         differences.}
+\label{cargo-fwd-diff-table}
+\begin{tabular}{l|ccc}
+\textbf{Comparison} & \textbf{Min. Diff.} & \textbf{Max. Diff.} & \textbf{Avg. Diff.} 
+\\ \hline
+LDO/QR              & 1\E{-6}             & 1.43357\E{2}           & 3.0683\E{-1}
+\rule{0pt}{2.6ex}   \\
+LDO/Galerkin        & 7\E{-5}             & 1.22385\E{2}           & 1.9609\E{0}      \\
+LDO/LDFE            & 6\E{-5}             & 1.52743\E{2}           & 3.3349\E{-1}      \\
+Galerkin/QR         & 4\E{-5}             & 2.46611\E{0}           & 3.9335\E{-1}      \\
+LDFE/QR             & 2\E{-5}             & 2.09118\E{0}           & 2.3756\E{-1}
+\end{tabular}
+\end{table}
+
+\clearpage
+\begin{figure}[!htb]
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[max height=0.445\textheight]
+{img/portal-fwd-flux-qr04.eps}
+\subcaption{QR forward flux slice.}
+\end{subfigure}
+\\
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[max height=0.445\textheight]
+{img/portal-fwd-flux-gkn04.eps}
+\subcaption{Galerkin forward flux slice.}
+\end{subfigure}
+\end{figure}
+\clearpage
+\begin{figure}[!htb]
+\ContinuedFloat
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[max height=0.445\textheight]
+{img/portal-fwd-flux-ldfe01.eps}
+\subcaption{LDFE forward flux slice.}
+\end{subfigure}
+\\
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[max height=0.445\textheight]
+{img/portal-fwd-flux-ldo11.eps}
+\subcaption{LDO forward flux slice.}
+\end{subfigure}
+\caption{Simplified portal monitor scenario forward scalar flux slices.}
+\label{cargo-fwd-slices}
+\end{figure}
+
+\clearpage
+\begin{figure}[!htb]
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[max height=0.445\textheight]
+{img/portal-flux-diff-qr.eps}
+\subcaption{LDO/QR flux relative difference.}
+\end{subfigure}
+\\
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[max height=0.445\textheight]
+{img/portal-flux-diff-gkn.eps}
+\subcaption{LDO/Galerkin flux relative difference.}
+\end{subfigure}
+\end{figure}
+\clearpage
+\begin{figure}[!htb]
+\ContinuedFloat
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[max height=0.445\textheight]
+{img/portal-flux-diff-ldfe.eps}
+\subcaption{LDO/LDFE flux relative difference.}
+\end{subfigure}
+\caption{Simplified portal monitor scenario forward scalar flux relative difference 
+         slices.}
+\label{cargo-fwd-diff-rel}
 \end{figure}
 
 \FloatBarrier
