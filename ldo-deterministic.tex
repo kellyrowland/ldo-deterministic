@@ -167,7 +167,7 @@ Keywords: x; y; z
 \label{sec:intro}
 
 With the recent rise in high-performance computing, large-scale 
-three-dimensional neutral particle transport is becoming more and more
+three-dimensional neutral particle transport is becoming increasingly
 commonplace. One usual solution approach is to discretize all of the
 independent variables of the steady-state Boltzmann transport equation and
 solve the resultant systems of equations. The classic discrete ordinates (\sn)
@@ -226,23 +226,52 @@ be found in Reference \cite{denovo}.
 The \sn\ approximation used in Denovo is
 
 \begin{multline}
-\bo_a \cdot \nabla \psi_a^g(\vecr) + \Sigma_t^g(\vecr)\psi_a^g(\vecr) = \\
-\sum_{g'=0}^{G}\sum_{\ell=0}^{N}\Sigma_{s,\ell}^{g'\sa g}(\vecr)
-\bigg[\Ye{\ell 0}{a}\phi_{\ell 0}^{g'}(\vecr) + \sum_{m=1}^{\ell}
-\bigg(\Ye{\ell m}{a}\phi_{\ell m}^{g'}(\vecr) \\
+\bo_n \cdot \nabla \psi_n^g(\vecr) + \Sigma_t^g(\vecr)\psi_n^g(\vecr) = \\
+\sum_{g'=0}^{G}\sum_{\ell=0}^{L}\Sigma_{s,\ell}^{g'\sa g}(\vecr)
+\bigg[\Ye{\ell 0}{n}\phi_{\ell 0}^{g'}(\vecr) + \sum_{m=1}^{\ell}
+\bigg(\Ye{\ell m}{n}\phi_{\ell m}^{g'}(\vecr) \\
  + \Yo{\ell m}{n}\vartheta_{\ell m}^{g'}(\vecr)\bigg)\bigg]
-+ Q_a^g(\vecr),
++ Q_n^g(\vecr),
 \label{eq:sn}
 \end{multline}
 
-\noindent where a standard multigroup energy approximation is used. $\phi$ and
-$\vartheta$ are the moments of the angular flux and the angles are integrated
-by a quadrature rule such that
+\noindent where a standard multigroup energy approximation is used and the
+angles are integrated by a quadrature rule such that
 
 \begin{equation}
-\int_{4\pi} d\bo = \sum_{a=1}^{n}w_a = 4\pi.
+\int_{4\pi} d\bo = \sum_{n=1}^{N}w_n = 4\pi.
 \label{eq:quadrule}
 \end{equation}
+
+\noindent $\phi$ and $\vartheta$ are the moments of the angular flux and are
+evaluated as
+
+\begin{equation}
+\phi_{\ell}^{g}=\sum_{n=1}^N \Ye{\ell m}{n}w_n\psi^{g}_{n}\
+\text{ and }\
+\vartheta_{\ell}^{g} = \sum_{n=1}^N \Yo{\ell m}{n}w_n\psi^{g}_{n},
+\label{sph_harm_exp}
+\end{equation}
+
+\noindent Here, $\Ye{\ell m}{n}$ and $\Yo{\ell m}{n}$ are the ``even'' and
+``odd'' real components of the spherical harmonic functions and are defined as
+
+\begin{equation}
+\Ye{\ell m}{n} = (-1)^m\sqrt{(2-\delta_{m0})\frac{2\ell+1}{4\pi}
+                       \frac{(\ell-m)!}{(\ell+m)!}}
+                       P_{\ell m}(\cos\theta)\cos(m\varphi),
+\label{eq:sph_e}
+\end{equation}
+\begin{equation}
+\Yo{\ell m}{n} = (-1)^m\sqrt{(2-\delta_{m0})\frac{2\ell+1}{4\pi}
+                       \frac{(\ell-m)!}{(\ell+m)!}}
+                       P_{\ell m}(\cos\theta)\sin(m\varphi).
+\label{eq:sph_o}
+\end{equation}
+
+\noindent In Equations \ref{eq:sph_e} and \ref{eq:sph_o},
+$P_{\ell m}(\cos\theta)$ is the associated Legendre polynomial and
+$(\theta,\varphi)$ are the components of $\bo$.
 
 %%---------------------------------------------------------------------------%%
 \subsection{Lagrange Discrete Ordinates (LDO) Equations}
