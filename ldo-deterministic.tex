@@ -227,7 +227,7 @@ The \sn\ approximation used in Denovo is
 
 \begin{multline}
 \bo_n \cdot \nabla \psi_n^g(\vecr) + \Sigma_t^g(\vecr)\psi_n^g(\vecr) = \\
-\sum_{g'=0}^{G}\sum_{\ell=0}^{L}\Sigma_{s,\ell}^{g'\sa g}(\vecr)
+\sum_{g'=0}^{G-1}\sum_{\ell=0}^{P}\Sigma_{s,\ell}^{g'\sa g}(\vecr)
 \bigg[\Ye{\ell 0}{n}\phi_{\ell 0}^{g'}(\vecr) + \sum_{m=1}^{\ell}
 \bigg(\Ye{\ell m}{n}\phi_{\ell m}^{g'}(\vecr) \\
  + \Yo{\ell m}{n}\vartheta_{\ell m}^{g'}(\vecr)\bigg)\bigg]
@@ -235,7 +235,10 @@ The \sn\ approximation used in Denovo is
 \label{eq:sn}
 \end{multline}
 
-\noindent where a standard multigroup energy approximation is used and the
+\noindent where a standard multigroup energy approximation is used ($G$ is the 
+number of discrete energy groups) and the 
+upper limit of summation for the scattering term spherical harmonic expansion,
+denoted as $P$ in Equation \ref{eq:sn}, is known as the ``\pn\ order''. The
 angles are integrated by a quadrature rule such that
 
 \begin{equation}
@@ -249,7 +252,7 @@ evaluated as
 \begin{equation}
 \phi_{\ell}^{g}=\sum_{n=1}^N \Ye{\ell m}{n}w_n\psi^{g}_{n}\
 \text{ and }\
-\vartheta_{\ell}^{g} = \sum_{n=1}^N \Yo{\ell m}{n}w_n\psi^{g}_{n},
+\vartheta_{\ell}^{g} = \sum_{n=1}^N \Yo{\ell m}{n}w_n\psi^{g}_{n}.
 \label{sph_harm_exp}
 \end{equation}
 
@@ -416,7 +419,8 @@ used to project harmonic moments onto discrete angle space. It is defined as
 \end{equation}
 
 \noindent Note that $[\ve{M}]$ is dependent only on angle and is therefore the
-same for each energy group. The operator $\ve{D}$ is the ``discrete-to-moment''
+same for each energy group. Recall that in Equation \ref{mtod}, $P$ is the \pn\
+order. The operator $\ve{D}$ is the ``discrete-to-moment''
 matrix; it is used to calculate the moments of the angular flux from discrete
 angular flux values. $\ve{D}$ is calculated as $\ve{M}^\top\ve{W}$, where
 $\ve{W}$ is a diagonal matrix of quadrature weights \cite{exmm}, and it is
@@ -457,7 +461,7 @@ as
   \Phi_g = \begin{pmatrix}
     \even_{00} & \even_{10} & \odd_{11} & \even_{11} & \even_{20}
     & \cdots & \odd_{PP} & \even_{PP}
-  \end{pmatrix}^\top\:
+  \end{pmatrix}^\top\:.
 \end{align}
 
 \noindent As we will describe below in Section \ref{sec:flux}, the 
