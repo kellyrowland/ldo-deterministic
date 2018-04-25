@@ -162,8 +162,12 @@ The Lagrange Discrete Ordinates (LDO) equations, developed by Ahrens as an
 alternative to the traditional discrete ordinates formulation, have been
 implemented in Denovo, a three-dimensional radiation transport code developed
 by Oak Ridge National Laboratory. The LDO equations retain the formal structure
-of the classical discrete ordinates equations but treat the particle scattering
-in a different way. Of particular interest is that the LDO equations have been
+of the classical discrete ordinates equations but treat particle scattering
+in a different way. Solutions of the LDO equations have an interpolatory
+structure such that the angular flux can be naturally evaluated at directions
+other than the discrete ordinates used in arriving at the solutions, and those
+discrete ordinates themselves may be chosen in a strategic way for the problem
+under consideration. Of particular interest is that the LDO equations have been
 shown to mitigate ray effects at increased angular resolutions. In this paper
 we present forward scalar flux solutions of the LDO equations for a small
 number of test cases of interest and compare the results against flux solutions
@@ -196,11 +200,22 @@ The Lagrange Discrete Ordinates (LDO) equations, developed by Ahrens
 \cite{ahrens}, are formally equivalent to the classic \sn\ equations and have
 been shown to mitigate ray effects at high angular resolutions.
 In this paper we will explore and assess deterministic scalar flux solutions
-from the LDO equations, which have never before
+from the LDO equations. Fundamental studies of the LDO formulation were
+conducted in their development, but the equations have never before
 been implemented in a full-scale radiation transport framework.
-% was it 3D before?
 
-% I'd add a paragraph summarizing what has been found to motivate the reader to look at the data below. This introduction just seems a little too short.
+Studies performed in this work compare the forward scalar flux solutions from
+the LDO equations with those from quadruple range (QR), Galerkin, and
+linear-discontinuous finite element (LDFE) quadrature sets. Three relevant
+test case scenarios are examined to provide a small array of results of
+interest to the community; we test both neutron and photon transport.
+The LDO equations' scalar flux solutions were found to be consistent with those
+of the standard quadrature types for all three test case scenarios and 
+commensurate with those of the standard quadrature types when comparing the
+flux solutions in the context of the experimental benchmark test case examined.
+The relative proximity of the LDO equations' solutions to those generated with
+the QR quadrature set prompts the exploration of the LDO equations' solutions
+as input for Monte Carlo variance reduction parameter generation.
 
 The remainder of the paper is structured as follows: background information
 regarding the main components of this work is given, followed by descriptions
@@ -214,14 +229,15 @@ and we close the paper with concluding remarks and suggestions for future work.
 
 We start by giving appropriate background information on constituent components
 of this work. Primarily, we will briefly cover the Denovo radiation transport
-solver and give a short introduction to the Lagrange Discrete Ordinates (LDO)
+solver and the traditional discrete ordinates (\sn) approximation.
+Then, we give a short introduction to the Lagrange Discrete Ordinates (LDO)
 equations. As one of the points of interest in the LDO equations is their
 unique handling of angular discretization and particle scattering, we will
 focus discussions in such a way as to highlight the actualities and
 implications of this difference.
 
 %%---------------------------------------------------------------------------%%
-\subsection{Denovo}
+\subsection{Classical Discrete Ordinates Equations}
 
 Denovo is a three-dimensional discrete ordinates radiation transport code
 developed by Oak Ridge National Laboratory \cite{denovo}. It is implemented in
@@ -896,6 +912,8 @@ structure would not greatly impact the comparative results.
 The step characteristics (SC) spatial discretization was used in all of the
 calculations and all runs used a P$_5$ scattering expansion.
 
+We compare the LDO equations' solutions with those from quadruple range (QR),
+Galerkin, and linear-discontinuous finite element (LDFE) quadrature sets.
 For the comparisons presented here, quadrature sets of similar angular mesh
 refinement were chosen such that the quadrature sets have approximately the 
 same total number of angles, with the exception of the Galerkin quadrature set.
