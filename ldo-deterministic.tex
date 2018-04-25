@@ -185,6 +185,9 @@ been shown to mitigate ray effects at high angular resolutions.
 In this paper we will explore and assess deterministic scalar flux solutions
 from the LDO equations, which have never before
 been implemented in a full-scale radiation transport framework.
+% was it 3D before?
+
+% I'd add a paragraph summarizing what has been found to motivate the reader to look at the data below. This introduction just seems a little too short.
 
 The remainder of the paper is structured as follows: background information
 regarding the main components of this work is given, followed by descriptions
@@ -243,7 +246,7 @@ The \sn\ approximation used in Denovo is
 number of discrete energy groups) and the 
 upper limit of summation for the scattering term spherical harmonic expansion,
 denoted as $P$ in Equation \ref{eq:sn}, is known as the ``\pn\ order''. The
-angles are integrated by a quadrature rule such that
+angles are integrated by a quadrature rule with $N$ ordinates such that
 
 \begin{equation}
 \int_{4\pi} d\bo = \sum_{n=1}^{N}w_n = 4\pi.
@@ -594,7 +597,7 @@ values of $\ell \in [0,L]$, so we typically set $L$ equal to the same
 scattering expansion \pn\ order $P$ in Equations
 \ref{mtod} -- \ref{denovo_scatter}.
 
-To recap, space and energy are handled in the same way between the two
+To summarize, space and energy are handled in the same way between the two
 different formulations, while angular discretization and scattering are handled
 differently. The traditional discrete ordinates formulation uses the $\ve{M}$
 and $\ve{D}$ operators to project harmonic moments onto discrete angle space
