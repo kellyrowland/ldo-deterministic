@@ -945,6 +945,8 @@ than the \sn\ order.
 \section{Results}
 \label{sec:results}
 
+%Intro paragraph, or at least a sentence. 
+
 %---------------------------------------------------------------------------%%
 \subsection{Steel Plate Embedded in Water}
 
@@ -957,15 +959,15 @@ scalar flux is highest in the source region and drops off by orders of
 magnitude along the $z-$axis.
 
 To more thoroughly evaluate the LDO quadrature set in this test case, we will
-look more closely at the differences between the representative LDO flux and
+look more closely at the differences between the LDO flux and
 the three other quadrature types. Figure \ref{steel-fwd-diff-rel} shows three
-plots of relative flux differences; each plot compares the representative LDO
-quadrature set against one of the standard quadrature set types. The relative
+plots of relative flux differences; each plot compares the LDO
+flux to one of the flux from one of the standard quadrature set types. The relative
 flux difference is calculated as
 
 \begin{equation}
 \phi_{\mathrm{diff}} = 
-\frac{\left|\phi_{\mathrm{LDO}}-\phi_{\mathrm{ref}}\right|}{\phi_{\mathrm{ref}}}
+\frac{\left|\phi_{\mathrm{LDO}}-\phi_{\mathrm{ref}}\right|}{\phi_{\mathrm{ref}}}\:,
 \label{flux-diff}
 \end{equation}
 
@@ -1006,7 +1008,7 @@ LDFE/QR             & 2\E{-7}             & 2.4807\E{-1}       & 9.632\E{-2}
 \end{tabular}
 \end{table}
 
-Looking at Figures \ref{steel-fwd-slices} and \ref{steel-fwd-diff-rel} we note
+Looking at Figures \ref{steel-fwd-slices} and \ref{steel-fwd-diff-rel}, we note
 that the forward scalar flux solutions from the LDO equations capture the same
 physical trends as the standard quadrature type solutions and also that the LDO
 flux solution most closely matches that using the QR quadrature set.
@@ -1017,6 +1019,7 @@ here. As QR quadratures are commonly used for Monte Carlo variance reduction
 parameter generation, the relative agreement of the LDO scalar flux with the QR
 scalar flux motivates the exploration of the use of LDO scalar flux solutions
 for Monte Carlo variance reduction parameter generation.
+% Again, this sort of feels like it's out of nowhere. I'd consider re-framing, potentially in a way that is similar to what I did in the intro. 
 
 \begin{figure}[!htb]
 \centering
@@ -1097,8 +1100,8 @@ flux plots. Looking at Figure \ref{dlvn-fwd-diff-gkn}, the areas of greatest
 discrepancy appear as ray effects; the relative coarseness of the
 representative Galerkin quadrature set angular mesh is likely the cause of
 this. This is visibly pronounced in the DLVN case because of the geometrically
-small particle source; it is also likely the source of the 
-LDO/Galerkin discrepancy seen above for the steel plate embedded in water, but
+small particle source. Ray effects are also likely the source of the 
+LDO/Galerkin discrepancy seen for the steel plate embedded in water, but
 ray effects are lessened in that scenario by the larger volumetric source.
 
 Lastly, it is instructive to compare the results of the forward deterministic
@@ -1149,18 +1152,18 @@ LDO           & 34.61          & 11.2           & \textbf{794.75} & \textbf{64.4
 \end{tabular}
 \end{table}
 
-Looking at Table \ref{dlvn-fwd-det-diff} we see that all of the calculated
+Looking at Table \ref{dlvn-fwd-det-diff}, we see that all of the calculated
 values fall outside of the experimental uncertainty of five percent
 \cite{dlvn1991}. The results from the LDO quadrature set most closely match the
 experimental results for half of the detector locations, which is better than
 any of the standard quadrature types tested here. Table
 \ref{dlvn-fwd-diff-table} lists the extreme and average values
 of the forward flux relative difference slices shown in Figure
-\ref{dlvn-fwd-diff-rel} with Galerkin/QR and LDFE/QR comparisons included for
-reference. We see that, on average, the LDO forward flux solution best matches
-the QR forward flux solution. However, in this case, the LDFE flux solution
-matches the QR flux solution better than the LDO flux solution on 
-average (5\% difference versus 8.4\% difference).
+\ref{dlvn-fwd-diff-rel}, with Galerkin/QR and LDFE/QR comparisons included for
+reference. We see that, on average, the LDO flux matches
+the QR flux better than it matches the other quadrature types. However, in this case, the LDFE flux solution on average 
+matches the QR flux solution better than any other quadrature type does, including the LDO flux solution (5\% difference versus 8.4\% difference).
+% I think these two sentences make more sense now. They were sort of contradictory how they were written before. 
 
 \begin{table}[!hbt]
 \centering
@@ -1177,6 +1180,8 @@ Galerkin/QR         & 3\E{-4}             & 6.3722\E{-1}  & 1.924\E{-1}      \\
 LDFE/QR             & 3\E{-5}             & 2.6688\E{-1}  & 5.047\E{-2}
 \end{tabular}
 \end{table}
+
+% Something I just notices: you can probably take "forward" out everywhere. I know it's a holdover from your dissertation, it's just that there isn't any other type of flux discussed. 
 
 \begin{figure}[!htb]
 \centering
@@ -1238,19 +1243,21 @@ greatly for this problem. Figure \ref{cargo-fwd-slices} shows forward scalar
 flux solutions for the representative quadrature sets with the material
 pallets, detector array, and shipping container outlines overlaid on the plots.
 Flux slices are plotted at the midplane of $z = 243.84$ cm (96 inches). All of
-the flux solutions display ray effects as a result of the streaming paths
+the flux solutions, seen in Figure \ref{cargo-fwd-slices}, display ray effects as a result of the streaming paths
 created by the material variation of the pallets inside of the shipping
 container.
+% Double check that all figures and tables are referred to.
 
+% I'm also not sure why the LDO flux is "representative". I think that's also a dissertation holdover?
 As with the previous test cases, we look at the differences between the 
-representative LDO flux and the three other quadrature types. In Figure
+LDO flux and the three other quadrature types. In Figure
 \ref{cargo-fwd-diff-rel}, the differences largely appear as ray effects. This
 is unsurprising given the combination of the small volume of the photon 
 source in the problem and the inherent difficulty of accurately simulating
-particle streaming in deterministic calculations. Again we see that the LDO
+particle streaming in deterministic calculations. Again, we see that the LDO
 scalar flux solution exhibits strong disagreement with the Galerkin scalar
 flux solution. The LDO/QR and LDO/LDFE comparison plots show discrepancies of
-similar orders of magnitude and all of the relative difference plots exhibit
+similar orders of magnitude, and all of the relative difference plots exhibit
 the greatest difference along the $y-z$ plane streaming pathway located in the
 center of the shipping container.
 
@@ -1269,9 +1276,11 @@ geometry configuration, it is unsurprising that the forward flux solutions
 generated with the various representative quadrature sets show only fair
 agreement.
 
+
+% For the photon problems, may want to add photon to remind folks. Not sure that it really matters though. 
 \begin{table}[!hbt]
 \centering
-\caption{Portal monitor forward scalar flux extremal and average relative 
+\caption{Portal monitor scalar photon flux extremal and average relative 
          differences.}
 \label{cargo-fwd-diff-table}
 \begin{tabular}{l|ccc}
