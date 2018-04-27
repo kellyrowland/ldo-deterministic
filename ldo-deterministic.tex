@@ -189,20 +189,29 @@ Keywords: x; y; z
 
 With the recent rise in high-performance computing, large-scale 
 three-dimensional neutral particle transport is becoming increasingly
-commonplace. One usual solution approach is to discretize all of the
+commonplace. One common solution approach is to discretize all of the
 independent variables of the steady-state Boltzmann transport equation and
-solve the resultant systems of equations. The classic discrete ordinates (\sn)
-method is well-known and commonly used in deterministic transport, but it
-frequently suffers from inaccuracies in scalar particle flux solutions
+solve the resultant systems of equations deterministically. The classic discrete ordinates (\sn)
+method is well-known and frequently used in deterministic transport, but it
+can suffer from inaccuracies in scalar particle flux solutions
 brought about by angular discretization (termed ``ray effects'').
 
 The Lagrange Discrete Ordinates (LDO) equations, developed by Ahrens
-\cite{ahrens}, are formally equivalent to the classic \sn\ equations and have
-been shown to mitigate ray effects at high angular resolutions.
-In this paper we will explore and assess deterministic scalar flux solutions
-from the LDO equations. Fundamental studies of the LDO formulation were
-conducted in their development, but the equations have never before
-been implemented in a full-scale radiation transport framework.
+\cite{ahrens}, are formally equivalent to the classic \sn\ equations, retaining the formal structure
+of the classical discrete ordinates equations but treat particle scattering
+in a different way. Solutions of the LDO equations have an interpolatory
+structure such that the angular flux can be naturally evaluated at directions
+other than the discrete ordinates used in arriving at the solutions, providing a high degree of flexibility.
+Further, the
+ordinates themselves may be chosen in a strategic way for the problem
+under consideration. 
+
+Fundamental studies of the LDO formulation were
+conducted in their development. That work showed that the LDO equations
+ mitigate ray effects at increased angular resolutions. 
+However, the equations have never before
+been implemented in a full-scale radiation transport framework. In this paper we will explore and assess deterministic scalar flux solutions
+from the LDO equations for real problems in production-level software. 
 
 Studies performed in this work compare the forward scalar flux solutions from
 the LDO equations with those from quadruple range (QR), Galerkin, and
@@ -213,9 +222,12 @@ The LDO equations' scalar flux solutions were found to be consistent with those
 of the standard quadrature types for all three test case scenarios and 
 commensurate with those of the standard quadrature types when comparing the
 flux solutions in the context of the experimental benchmark test case examined.
-The relative proximity of the LDO equations' solutions to those generated with
-the QR quadrature set prompts the exploration of the LDO equations' solutions
-as input for Monte Carlo variance reduction parameter generation.
+The demonstration of the accuracy of the LDO equations in a full-scale transport code opens the door to their strategic use for problems containing strong angular anisotropies or for which specific directions are of particular interest. 
+
+%The relative proximity of the LDO equations' solutions to those generated with
+%the QR quadrature set prompts the exploration of the LDO equations' solutions 
+%as input for Monte Carlo variance reduction parameter generation.
+% Do we talk about that in this paper? It seems a little bit out of nowhere. I've shifted this a little bit; see what you think.
 
 The remainder of the paper is structured as follows: background information
 regarding the main components of this work is given, followed by descriptions
