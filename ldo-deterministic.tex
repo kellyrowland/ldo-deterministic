@@ -761,8 +761,8 @@ storage vector after the calculation has finished.
 %%---------------------------------------------------------------------------%%
 \section{Test Cases and Run Parameters}
 
-First we will introduce the scenarios in which the LDO equations' scalar flux
-solutions are compared to those of standard quadrature types. Then we will list
+First, we will introduce the scenarios in which the LDO equations' scalar flux
+solutions are compared to those of standard quadrature types. Then, we will list
 the various parameters used in the deterministic calculations.
 
 %%---------------------------------------------------------------------------%%
@@ -911,7 +911,7 @@ $z-$dimension; thus the total number of computational blocks equals the number
 of processes. Denovo uses the Koch-Baker-Alcouffe (KBA) parallel sweep
 algorithm for high parallel efficiency in calculating transport sweeps
 \cite{denovo}; the aforementioned block structure was chosen to achieve the
-same parallel performance among all test case deterministic simulations. 
+same parallel decomposition among all test case deterministic simulations. 
 
 The two neutron transport test cases use the same coarse energy group structure
 specified in  the ``27n19g'' library; the groups in this library are listed in 
@@ -924,7 +924,7 @@ energy discretization is treated the same way between the traditional discrete
 ordinates formulation and the LDO equations, it was assumed that energy group 
 structure would not greatly impact the comparative results.
 The step characteristics (SC) spatial discretization was used in all of the
-calculations and all runs used a P$_5$ scattering expansion.
+calculations and all cases used a P$_5$ scattering expansion.
 
 We compare the LDO equations' solutions with those from quadruple range (QR),
 Galerkin, and linear-discontinuous finite element (LDFE) quadrature sets.
@@ -939,6 +939,7 @@ order is 5 and so the scattering data used matches that of the other quadrature
 types. At the time of this writing, Galerkin quadrature sets are implemented in
 the Exnihilo framework with the restriction that the \pn\ order be one greater
 than the \sn\ order.
+% Really good description of problems and parameters. I think this is strong on the reproducibilty potential.
 
 %---------------------------------------------------------------------------%%
 \section{Results}
