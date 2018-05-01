@@ -71,7 +71,6 @@
 \usepackage{setspace}
 \usepackage{color}
 \usepackage{array}
-%\usepackage{subfigure}
 \renewcommand{\ttdefault}{cmtt}
 % The float package HAS to load before hyperref
 \usepackage{float} % for psuedocode formatting
@@ -83,45 +82,23 @@
 \usepackage{placeins} % for float barriers
 
 %-------------
-\DeclareMathOperator{\diag}{diag}
-\DeclareMathOperator{\low}{lower}
-\DeclareMathOperator{\upp}{upper}
-
 \newcommand{\sa}{\shortrightarrow}
 \newcommand{\bo}{\mathbf\Omega}
 \newcommand{\vecr}{\textbf{r}}
 \newcommand{\sn}{S$_\mathrm{N}$}
 \newcommand{\pn}{P$_\mathrm{N}$}
-\newcommand{\sigt}{\Sigma_t}
-\newcommand{\sigs}{\Sigma_s}
-\newcommand{\hl}{\mathcal{H}_L}
-\newcommand{\maths}{\mathbb{S}^2}
-\newcommand{\dl}{d_L}
-\newcommand{\lij}{\langle L_i,L_j \rangle}
-\newcommand{\kij}{\langle K_i,K_j \rangle}
 \newcommand{\ve}[1]{\ensuremath{\mathbf{#1}}}
 \newcommand{\Ye}[2]{\ensuremath{Y^e_{#1}(\bo_#2)}}
 \newcommand{\Yo}[2]{\ensuremath{Y^o_{#1}(\bo_#2)}}
 \newcommand{\Sigg}[1]{\ensuremath{\Sigma^{g'\sa g}_{\text{s},#1}}}
 \newcommand{\even}{\ensuremath{\phi^g}}
 \newcommand{\odd}{\ensuremath{\vartheta^g}}
-\newcommand{\xhat}{\ensuremath{\hat{x}}}
-\newcommand{\xbar}{\ensuremath{\bar{x}}}
-\newcommand{\qhat}{\ensuremath{\hat{q}}}
-\newcommand{\psihat}{\ensuremath{\hat{\psi}}}
-\newcommand{\khat}{\ensuremath{\hat{K}}}
 \newcommand{\Gij}[2]{\sum_{\ell=0}^L\frac{2\ell+1}{4\pi}P_{\ell}(\bo_#1\cdot\bo_#2)}
 \newcommand{\Sij}[2]{\Sigma^{g'\rightarrow g}_{\text{s,L}}(\bo_#1\cdot\bo_#2)}
-\newcommand{\Snij}[3]{\Sigma^{g'\rightarrow g}_{\text{s,#1}}(\bo_#2 \cdot \bo_#3)}
-\newcommand{\Snz}[3]{\Sigma^{0\sa 0}_{\text{s,#1}}(\bo_#2 \cdot \bo_#3)}
-\newcommand{\ldosig}[2]{\sum_{n=0}^N \frac{2n+1}{4\pi}\sigma_{s,n}^{g'\rightarrow g} P_n(\bo_#1\cdot\bo_#2)}
 \newcommand{\fq}{\qquad\qquad\qquad\qquad}
 \newcommand{\st}{\tilde{S}}
 \newcommand{\E}[1]{$\times10^{#1}$}
 \newcommand{\fwc}{\mbox{FW-CADIS}}
-
-\showboxdepth=\maxdimen
-\showboxbreadth=\maxdimen
 
 \begin{document}
 
@@ -169,7 +146,7 @@ other than the discrete ordinates used in arriving at the solutions, and the
 ordinates themselves may be chosen in a strategic way for the problem
 under consideration. Of particular interest is that the LDO equations have been
 shown to mitigate ray effects at increased angular resolutions. In this paper
-we present forward scalar flux solutions of the LDO equations for a small
+we present scalar flux solutions of the LDO equations for a small
 number of test cases of interest and compare the results against flux solutions
 generated using standard quadrature types. The LDO equations' flux solutions
 were found to be comparable to those resultant from the standard quadrature
@@ -187,47 +164,45 @@ Keywords: x; y; z
 \section{Introduction}
 \label{sec:intro}
 
-With the recent rise in high-performance computing, large-scale 
-three-dimensional neutral particle transport is becoming increasingly
-commonplace. One common solution approach is to discretize all of the
-independent variables of the steady-state Boltzmann transport equation and
-solve the resultant systems of equations deterministically. The classic discrete ordinates (\sn)
+With the recent rise in high-performance computing, large-scale  three-
+dimensional neutral particle transport is becoming increasingly commonplace.
+One common solution approach is to discretize all of the independent variables
+of the steady-state Boltzmann transport equation and solve the resultant
+systems of equations deterministically. The classic discrete ordinates (\sn)
 method is well-known and frequently used in deterministic transport, but it
-can suffer from inaccuracies in scalar particle flux solutions
-brought about by angular discretization (termed ``ray effects'').
+can suffer from inaccuracies in scalar particle flux solutions brought about
+by angular discretization (termed ``ray effects'').
 
 The Lagrange Discrete Ordinates (LDO) equations, developed by Ahrens
-\cite{ahrens}, are formally equivalent to the classic \sn\ equations, retaining the formal structure
-of the classical discrete ordinates equations but treat particle scattering
-in a different way. Solutions of the LDO equations have an interpolatory
-structure such that the angular flux can be naturally evaluated at directions
-other than the discrete ordinates used in arriving at the solutions, providing a high degree of flexibility.
-Further, the
-ordinates themselves may be chosen in a strategic way for the problem
-under consideration. 
+\cite{ahrens}, are formally equivalent to the classic \sn\ equations; they
+retain the formal structure of the classical discrete ordinates equations but
+treat particle scattering in a different way. Solutions of the LDO equations
+have an interpolatory structure such that the angular flux can be naturally
+evaluated at directions other than the discrete ordinates used in arriving at
+the solutions, providing a high degree of flexibility. Furthermore, the
+ordinates themselves may be chosen in a strategic way for the problem under
+consideration.
 
-Fundamental studies of the LDO formulation were
-conducted in their development. That work showed that the LDO equations
- mitigate ray effects at increased angular resolutions. 
-However, the equations have never before
-been implemented in a full-scale radiation transport framework. In this paper we will explore and assess deterministic scalar flux solutions
-from the LDO equations for real problems in production-level software. 
+Fundamental studies of the LDO formulation were conducted in their development
+which showed that the LDO equations mitigate ray effects at increased angular
+resolutions. However, the equations have never before been implemented in a
+full-scale radiation transport framework. In this paper we will explore and
+assess deterministic scalar flux solutions from the LDO equations for real
+problems in production-level software.
 
-Studies performed in this work compare the forward scalar flux solutions from
-the LDO equations with those from quadruple range (QR), Galerkin, and
-linear-discontinuous finite element (LDFE) quadrature sets. Three relevant
-test case scenarios are examined to provide a small array of results of
-interest to the community; we test both neutron and photon transport.
-The LDO equations' scalar flux solutions were found to be consistent with those
-of the standard quadrature types for all three test case scenarios and 
-commensurate with those of the standard quadrature types when comparing the
-flux solutions in the context of the experimental benchmark test case examined.
-The demonstration of the accuracy of the LDO equations in a full-scale transport code opens the door to their strategic use for problems containing strong angular anisotropies or for which specific directions are of particular interest. 
-
-%The relative proximity of the LDO equations' solutions to those generated with
-%the QR quadrature set prompts the exploration of the LDO equations' solutions 
-%as input for Monte Carlo variance reduction parameter generation.
-% Do we talk about that in this paper? It seems a little bit out of nowhere. I've shifted this a little bit; see what you think.
+Studies performed in this work compare scalar flux solutions from the LDO
+equations with those from quadruple range (QR), Galerkin, and linear-
+discontinuous finite element (LDFE) quadrature sets. Three relevant test case
+scenarios are examined to provide a small array of results of interest to the
+community; we test both neutron and photon transport. The LDO equations'
+scalar flux solutions were found to be consistent with those of the standard
+quadrature types for all three test case scenarios and commensurate with
+those of the standard quadrature types when comparing the flux solutions in
+the context of the experimental benchmark test case examined. The
+demonstration of the accuracy of the LDO equations in a full-scale transport
+code opens the door to their strategic use for problems containing strong
+angular anisotropies or in which specific directions are of particular
+interest.
 
 The remainder of the paper is structured as follows: background information
 regarding the main components of this work is given, followed by descriptions
@@ -239,21 +214,21 @@ and we close the paper with concluding remarks and suggestions for future work.
 \section{Background}
 \label{sec:background}
 
-We start by giving background information on constituent components
-of this work. Primarily, we will briefly cover the traditional discrete ordinates (\sn) approximation.
-Then, we give a short introduction to the Lagrange Discrete Ordinates (LDO)
-equations. As one of the points of interest in the LDO equations is their
-unique handling of angular discretization and particle scattering, we will
-focus discussions in such a way as to highlight the actualities and
-implications of this difference.
-We implemented this work in Denovo, a three-dimensional discrete ordinates radiation transport code
+We start by giving background information on constituent components of this
+work. Primarily, we will briefly cover the traditional discrete ordinates
+(\sn) approximation. Then, we give a short introduction to the Lagrange
+Discrete Ordinates (LDO) equations. As one of the points of interest in the
+LDO equations is their unique handling of angular discretization and particle
+scattering, we will focus discussions in such a way as to highlight the
+actualities and implications of this difference. We implemented this work in
+Denovo, a three-dimensional discrete ordinates radiation transport code
 developed by Oak Ridge National Laboratory \cite{denovo}. Denovo is part of
 the Exnihilo framework that allows for multiple combinations of spatial
-discretizations, quadrature sets, and solution methods. 
+discretizations, quadrature sets, and solution methods.
 
 %%---------------------------------------------------------------------------%%
 \subsection{Classical Discrete Ordinates Equations}
-% I'm taking a lot of the references to Denovo out as this is all generic.
+
 The steady-state Boltzmann transport equation is
 
 \begin{multline}
@@ -271,7 +246,6 @@ ordinates method employed for angular discretization; full detail may
 be found in Reference \cite{denovo}.
 
 The \sn\ approximation is
-% There's only one sn approximation, it's not specific to any piece of software
 
 \begin{multline}
 \bo_n \cdot \nabla \psi_n^g(\vecr) + \Sigma_t^g(\vecr)\psi_n^g(\vecr) = \\
@@ -283,29 +257,30 @@ The \sn\ approximation is
 \label{eq:sn}
 \end{multline}
 
-\noindent where a standard multigroup energy approximation is used ($G$ is the 
-number of discrete energy groups corresponding to the discretization index $g$) and the 
-upper limit of summation for the scattering term spherical harmonic expansion,
-denoted as $P$ in Equation \ref{eq:sn}, is known as the ``\pn\ order''. The
-angles are integrated by a quadrature rule with $N$ ordinates such that
+\noindent where a standard multigroup energy approximation is used ($G$ is the
+number of discrete energy groups corresponding to the discretization index
+$g$) and the  upper limit of summation for the scattering term spherical
+harmonic expansion, denoted as $P$ in Equation \ref{eq:sn}, is known as the
+``\pn\ order''. The angles are integrated by a quadrature rule with $N$
+ordinates such that
 
 \begin{equation}
 \int_{4\pi} d\bo = \sum_{n=1}^{N}w_n = 4\pi.
 \label{eq:quadrule}
 \end{equation}
 
-\noindent The angular flux is expanded into moments, $\phi$ and $\vartheta$, which are
-evaluated as
+\noindent The scattering source is expanded in terms of spherical harmonics:
 
 \begin{equation}
-\phi_{\ell}^{g}=\sum_{n=1}^N \Ye{\ell m}{n}w_n\psi^{g}_{n}\
-\text{ and }\
-\vartheta_{\ell}^{g} = \sum_{n=1}^N \Yo{\ell m}{n}w_n\psi^{g}_{n}.
+\phi_{\ell,i,j,k}^{g}=\sum_{n=1}^N \Ye{\ell m}{n}w_n\psi^{g,n}_{i,j,k}\ \text{ and }\
+\vartheta_{\ell,i,j,k}^{g} = \sum_{n=1}^N \Yo{\ell m}{n}w_n\psi^{g,n}_{i,j,k},
 \label{sph_harm_exp}
 \end{equation}
 
-\noindent Here, $\Ye{\ell m}{n}$ and $\Yo{\ell m}{n}$ are the ``even'' and
-``odd'' real components of the spherical harmonic functions and are defined as
+\noindent where $\phi$ and $\vartheta$ are referred to as the ``angular flux
+moments''. Here, $\Ye{\ell m}{n}$ and $\Yo{\ell m}{n}$ are the ``even'' and
+``odd'' real components of the spherical harmonic functions, defined as
+\cite{exmm}
 
 \begin{equation}
 \Ye{\ell m}{n} = (-1)^m\sqrt{(2-\delta_{m0})\frac{2\ell+1}{4\pi}
@@ -323,15 +298,14 @@ evaluated as
 \noindent In Equations \ref{eq:sph_e} and \ref{eq:sph_o},
 $P_{\ell m}(\cos\theta)$ is the associated Legendre polynomial and
 $(\theta,\varphi)$ are the components of $\bo$.
-% You may want to add something about the scattering moments. That term still isn't defined. 
 
 %%---------------------------------------------------------------------------%%
 \subsection{Lagrange Discrete Ordinates (LDO) Equations}
 
 The Lagrange Discrete Ordinates (LDO) equations are formally the same as the
 traditional \sn\ equations but feature several distinct and important
-differences. From the derivation in Reference \cite{ahrens}, the equations, without energy discretization, are written
-as
+differences. From the derivation in Reference \cite{ahrens}, the equations,
+without energy discretization, are written as
 
 \begin{multline}
 \bo_n\cdot\nabla\psi_{n}(\vecr,E) + 
@@ -372,11 +346,11 @@ Womersley \cite{wom}.
 \section{Methodology}
 
 First, a comparison of the traditional formulation of the discrete ordinates
-equations with the LDO equations is presented to demonstrate the difference 
-in implementing the two separate sets of equations. Then, a brief discussion of 
-scattering is given to highlight the specific differences between the two sets
-of equations with respect to what scattering data is needed and how scattering is handled from the perspective of 
-implementation.
+equations with the LDO equations is presented to demonstrate the difference
+in implementing the two separate sets of equations. Then, a brief discussion
+of  scattering is given to highlight the specific differences between the two
+sets of equations with respect to what scattering data is needed and how
+scattering is handled from the perspective of implementation.
 
 %%---------------------------------------------------------------------------%%
 \subsection{Operator Form}
@@ -736,7 +710,6 @@ calculated for a given spatial cell and energy group as
      = \sqrt{4\pi}\even_{00}.
 \label{eq:scalar_flux}
 \end{equation}
-% it makes sense to use denovo here b/c the normalization is an implementation choice :)
 
 \noindent Thus, based on Equation \ref{eq:scalar_flux}, Denovo only retrieves
 the first entry of the angular flux moment storage vector when called upon to
@@ -939,30 +912,33 @@ order is 5 and so the scattering data used matches that of the other quadrature
 types. At the time of this writing, Galerkin quadrature sets are implemented in
 the Exnihilo framework with the restriction that the \pn\ order be one greater
 than the \sn\ order.
-% Really good description of problems and parameters. I think this is strong on the reproducibilty potential.
 
 %---------------------------------------------------------------------------%%
 \section{Results}
 \label{sec:results}
 
-%Intro paragraph, or at least a sentence. 
+We present descriptions of and numerical results corresponding to three test
+case scenarios. The first two scenarios are neutron transport problems, while
+the third scenario is a photon transport problem. Flux calculations from the
+four quadrature types are presented for each test case, with comparisons
+highlighted between the LDO flux solutions and those of the standard
+quadrature types.
 
 %---------------------------------------------------------------------------%%
 \subsection{Steel Plate Embedded in Water}
 
-Figure \ref{steel-fwd-slices} shows a representative forward scalar flux slice
-plot for each quadrature type for the steel plate scenario. 
-Each of the flux slices is at the midplane of
-the $y-$dimension such that $y = 25$ cm. The geometry/material borders are
-outlined on each plot as well. All plots show the same expected result -- the
-scalar flux is highest in the source region and drops off by orders of
-magnitude along the $z-$axis.
+Figure \ref{steel-fwd-slices} shows a scalar flux slice plot for each
+quadrature type for the steel plate scenario.  Each of the flux slices is at
+the midplane of the $y-$dimension such that $y = 25$ cm. The geometry/material
+borders are outlined on each plot as well. All plots show the same expected
+result -- the scalar flux is highest in the source region and drops off by
+orders of magnitude along the $z-$axis.
 
 To more thoroughly evaluate the LDO quadrature set in this test case, we will
 look more closely at the differences between the LDO flux and
 the three other quadrature types. Figure \ref{steel-fwd-diff-rel} shows three
 plots of relative flux differences; each plot compares the LDO
-flux to one of the flux from one of the standard quadrature set types. The relative
+flux to the flux from one of the standard quadrature set types. The relative
 flux difference is calculated as
 
 \begin{equation}
@@ -987,14 +963,14 @@ differences between various quadrature types for the flux slices plotted in
 Figure \ref{steel-fwd-diff-rel}. We compare the representative LDO flux
 solution to the solutions from the three standard representative quadrature
 types and also compare the Galerkin and LDFE results against the QR result. On
-average, the LDO forward flux solution matches the QR flux solution more
+average, the LDO scalar flux solution matches the QR flux solution more
 closely than it matches either the Galerkin or LDFE flux solutions.
 Additionally, the LDO flux solution matches the QR flux solution more closely
 than do either of the Galerkin and LDFE flux solutions.
 
 \begin{table}[!hbt]
 \centering
-\caption{Steel plate forward scalar flux extremal and average relative differences.}
+\caption{Steel plate scalar flux extremal and average relative differences.}
 \label{steel-fwd-diff-table}
 \begin{tabular}{l|ccc}
 \textbf{Comparison} & \textbf{Min. Diff.} & \textbf{Max. Diff.} & \textbf{Avg. Diff.} 
@@ -1008,43 +984,41 @@ LDFE/QR             & 2\E{-7}             & 2.4807\E{-1}       & 9.632\E{-2}
 \end{tabular}
 \end{table}
 
-Looking at Figures \ref{steel-fwd-slices} and \ref{steel-fwd-diff-rel}, we note
-that the forward scalar flux solutions from the LDO equations capture the same
-physical trends as the standard quadrature type solutions and also that the LDO
-flux solution most closely matches that using the QR quadrature set.
+Looking at Figures \ref{steel-fwd-slices} and \ref{steel-fwd-diff-rel}, we
+note that the  scalar flux solutions from the LDO equations capture the same
+physical trends as the standard quadrature type solutions and also that the
+LDO flux solution most closely matches that using the QR quadrature set.
 Additionally, Table \ref{steel-fwd-diff-table} shows an average difference of
 2.2\% between the plotted flux solutions from the representative LDO and QR
-quadrature sets, which is the lowest average difference seen in the comparisons
-here. As QR quadratures are commonly used for Monte Carlo variance reduction
-parameter generation, the relative agreement of the LDO scalar flux with the QR
-scalar flux motivates the exploration of the use of LDO scalar flux solutions
-for Monte Carlo variance reduction parameter generation.
-% Again, this sort of feels like it's out of nowhere. I'd consider re-framing, potentially in a way that is similar to what I did in the intro. 
+quadrature sets, which is the lowest average difference seen in the
+comparisons here. As QR quadratures are commonly used in \sn\ calculations,
+the relative agreement of the LDO scalar flux with the QR scalar flux
+motivates further exploration of the LDO scalar flux solutions.
 
 \begin{figure}[!htb]
 \centering
 \begin{subfigure}{0.4\textwidth}
 \includegraphics[max height=0.445\textheight]
 {img/steel-fwd-flux-qr04.eps}
-\subcaption{QR forward flux slice.}
+\subcaption{QR scalar flux slice.}
 \end{subfigure} ~
 \begin{subfigure}{0.4\textwidth}
 \includegraphics[max height=0.445\textheight]
 {img/steel-fwd-flux-gkn04.eps}
-\subcaption{Galerkin forward flux slice.}
+\subcaption{Galerkin scalar flux slice.}
 \end{subfigure}
 \\
 \begin{subfigure}{0.4\textwidth}
 \includegraphics[max height=0.445\textheight]
 {img/steel-fwd-flux-ldfe01.eps}
-\subcaption{LDFE forward flux slice.}
+\subcaption{LDFE scalar flux slice.}
 \end{subfigure} ~
 \begin{subfigure}{0.4\textwidth}
 \includegraphics[max height=0.445\textheight]
 {img/steel-fwd-flux-ldo11.eps}
-\subcaption{LDO forward flux slice.}
+\subcaption{LDO scalar flux slice.}
 \end{subfigure}
-\caption{Steel plate forward scalar flux slices.}
+\caption{Steel plate scalar flux slices.}
 \label{steel-fwd-slices}
 \end{figure}
 
@@ -1066,7 +1040,7 @@ for Monte Carlo variance reduction parameter generation.
 {img/steel-flux-diff-ldfe.eps}
 \subcaption{LDO/LDFE flux rel. diff.}
 \end{subfigure}
-\caption{Steel plate forward scalar flux relative difference slices.}
+\caption{Steel plate  scalar flux relative difference slices.}
 \label{steel-fwd-diff-rel}
 \end{figure}
 
@@ -1080,7 +1054,7 @@ experimental geometry was simulated, here we plot only half of the
 configuration; this is the typical view of the benchmark seen in the
 literature.
 
-Figure \ref{dlvn-fwd-slices} shows the forward scalar flux for each of the
+Figure \ref{dlvn-fwd-slices} shows the scalar flux for each of the
 representative quadrature sets at the midplane of $y = 27$ inches (68.58 cm).
 Each of the plots has outlines of the material boundaries with the detector
 locations delineated as well. As expected, the flux is highest at the neutron
@@ -1102,9 +1076,9 @@ representative Galerkin quadrature set angular mesh is likely the cause of
 this. This is visibly pronounced in the DLVN case because of the geometrically
 small particle source. Ray effects are also likely the source of the 
 LDO/Galerkin discrepancy seen for the steel plate embedded in water, but
-ray effects are lessened in that scenario by the larger volumetric source.
+they are lessened in that scenario by the larger volumetric source.
 
-Lastly, it is instructive to compare the results of the forward deterministic
+Lastly, it is instructive to compare the results of the deterministic
 scalar flux solutions with the experimentally measured flux values at the
 detector locations. Table \ref{dlvn-fwd-det} lists the experimentally measured
 \cite{dlvn1991} and deterministically calculated scalar flux values at the
@@ -1154,20 +1128,20 @@ LDO           & 34.61          & 11.2           & \textbf{794.75} & \textbf{64.4
 
 Looking at Table \ref{dlvn-fwd-det-diff}, we see that all of the calculated
 values fall outside of the experimental uncertainty of five percent
-\cite{dlvn1991}. The results from the LDO quadrature set most closely match the
-experimental results for half of the detector locations, which is better than
-any of the standard quadrature types tested here. Table
-\ref{dlvn-fwd-diff-table} lists the extreme and average values
-of the forward flux relative difference slices shown in Figure
-\ref{dlvn-fwd-diff-rel}, with Galerkin/QR and LDFE/QR comparisons included for
-reference. We see that, on average, the LDO flux matches
-the QR flux better than it matches the other quadrature types. However, in this case, the LDFE flux solution on average 
-matches the QR flux solution better than any other quadrature type does, including the LDO flux solution (5\% difference versus 8.4\% difference).
-% I think these two sentences make more sense now. They were sort of contradictory how they were written before. 
+\cite{dlvn1991}. The results from the LDO quadrature set most closely match
+the experimental results for half of the detector locations, which is better
+than any of the standard quadrature types tested here. Table \ref{dlvn-fwd-
+diff-table} lists the extreme and average values of the scalar flux relative
+difference slices shown in Figure \ref{dlvn-fwd-diff-rel}, with Galerkin/QR
+and LDFE/QR comparisons included for reference. We see that, on average, the
+LDO flux solution matches the QR flux solution better than it matches those of
+the other quadrature types. However, in this case, the LDFE flux solution
+matches the QR flux solution on average better than any other quadrature type,
+including the LDO flux solution (5\% difference versus 8.4\% difference).
 
 \begin{table}[!hbt]
 \centering
-\caption{DLVN benchmark forward scalar flux extremal and average relative 
+\caption{DLVN benchmark scalar flux extremal and average relative 
          differences.}
 \label{dlvn-fwd-diff-table}
 \begin{tabular}{l|ccc}
@@ -1181,32 +1155,30 @@ LDFE/QR             & 3\E{-5}             & 2.6688\E{-1}  & 5.047\E{-2}
 \end{tabular}
 \end{table}
 
-% Something I just notices: you can probably take "forward" out everywhere. I know it's a holdover from your dissertation, it's just that there isn't any other type of flux discussed. 
-
 \begin{figure}[!htb]
 \centering
 \begin{subfigure}{0.4\textwidth}
 \includegraphics[max height=0.445\textheight]
 {img/dlvn-fwd-flux-qr04.eps}
-\subcaption{QR forward flux slice.}
+\subcaption{QR scalar flux slice.}
 \end{subfigure} ~
 \begin{subfigure}{0.4\textwidth}
 \includegraphics[max height=0.445\textheight]
 {img/dlvn-fwd-flux-gkn04.eps}
-\subcaption{Galerkin forward flux slice.}
+\subcaption{Galerkin scalar flux slice.}
 \end{subfigure}
 \\
 \begin{subfigure}{0.4\textwidth}
 \includegraphics[max height=0.445\textheight]
 {img/dlvn-fwd-flux-ldfe01.eps}
-\subcaption{LDFE forward flux slice.}
+\subcaption{LDFE scalar flux slice.}
 \end{subfigure} ~
 \begin{subfigure}{0.4\textwidth}
 \includegraphics[max height=0.445\textheight]
 {img/dlvn-fwd-flux-ldo11.eps}
-\subcaption{LDO forward flux slice.}
+\subcaption{LDO scalar flux slice.}
 \end{subfigure}
-\caption{DLVN benchmark forward scalar flux slices.}
+\caption{DLVN benchmark scalar flux slices.}
 \label{dlvn-fwd-slices}
 \end{figure}
 
@@ -1229,7 +1201,7 @@ LDFE/QR             & 3\E{-5}             & 2.6688\E{-1}  & 5.047\E{-2}
 {img/dlvn-flux-diff-ldfe.eps}
 \subcaption{LDO/LDFE flux rel. diff.}
 \end{subfigure}
-\caption{DLVN benchmark forward scalar flux relative difference slices.}
+\caption{DLVN benchmark scalar flux relative difference slices.}
 \label{dlvn-fwd-diff-rel}
 \end{figure}
 
@@ -1238,17 +1210,15 @@ LDFE/QR             & 3\E{-5}             & 2.6688\E{-1}  & 5.047\E{-2}
 \subsection{Simplified Portal Monitor}
 
 Lastly, we look at the simplified portal monitor problem with the small photon
-source. Of the test cases presented here, the forward solutions differ most
-greatly for this problem. Figure \ref{cargo-fwd-slices} shows forward scalar
-flux solutions for the representative quadrature sets with the material
-pallets, detector array, and shipping container outlines overlaid on the plots.
-Flux slices are plotted at the midplane of $z = 243.84$ cm (96 inches). All of
-the flux solutions, seen in Figure \ref{cargo-fwd-slices}, display ray effects as a result of the streaming paths
-created by the material variation of the pallets inside of the shipping
-container.
-% Double check that all figures and tables are referred to.
+source. Of the test cases presented here, the flux solutions differ most
+greatly for this problem. Figure \ref{cargo-fwd-slices} shows scalar flux
+solutions for the representative quadrature sets with the material pallets,
+detector array, and shipping container outlines overlaid on the plots. Flux
+slices are plotted at the midplane of $z = 243.84$ cm (96 inches). All of the
+flux solutions plotted in Figure \ref{cargo-fwd-slices} display ray effects
+as a result of the streaming paths created by the material variation of the
+pallets inside of the shipping container.
 
-% I'm also not sure why the LDO flux is "representative". I think that's also a dissertation holdover?
 As with the previous test cases, we look at the differences between the 
 LDO flux and the three other quadrature types. In Figure
 \ref{cargo-fwd-diff-rel}, the differences largely appear as ray effects. This
@@ -1261,23 +1231,20 @@ similar orders of magnitude, and all of the relative difference plots exhibit
 the greatest difference along the $y-z$ plane streaming pathway located in the
 center of the shipping container.
 
-Table \ref{cargo-fwd-diff-table} lists the minimum, maximum, and average values
-of the relative differences in the forward scalar flux solutions, shown in
-Figure \ref{cargo-fwd-diff-rel}. As with all of the previous cases, comparisons
-between the QR flux solution and the Galerkin and LDFE flux solutions are
-included for reference. None of the flux solutions in this case show
-particularly good agreement on average; the closest solutions are the LDFE and
-QR flux solutions which have an average difference of about 24\%. Of the three
-standard quadrature types, the LDO forward flux solution matches the QR forward
-flux solution most closely.
-Given the localized small volumetric particle source used in the problem in 
-combination with the streaming pathways created by the scenario's material and
-geometry configuration, it is unsurprising that the forward flux solutions
-generated with the various representative quadrature sets show only fair
-agreement.
+Table \ref{cargo-fwd-diff-table} lists the minimum, maximum, and average
+values of the relative differences in the scalar flux solutions, shown in
+Figure \ref{cargo-fwd-diff-rel}. As with all of the previous cases,
+comparisons between the QR flux solution and the Galerkin and LDFE flux
+solutions are included for reference. None of the flux solutions in this case
+show particularly good agreement on average; the closest solutions are the
+LDFE and QR flux solutions which have an average difference of about 24\%. Of
+the three standard quadrature types, the LDO flux solution matches the QR flux
+solution most closely. Given the localized small volumetric particle source
+used in the problem in  combination with the streaming pathways created by the
+scenario's material and geometry configuration, it is unsurprising that the
+scalar flux solutions generated with the various quadrature sets show only
+fair agreement.
 
-
-% For the photon problems, may want to add photon to remind folks. Not sure that it really matters though. 
 \begin{table}[!hbt]
 \centering
 \caption{Portal monitor scalar photon flux extremal and average relative 
@@ -1301,14 +1268,14 @@ LDFE/QR             & 2\E{-5}             & 2.09118\E{0}           & 2.3756\E{-1
 \centering
 \includegraphics[max height=0.445\textheight]
 {img/portal-fwd-flux-qr04.eps}
-\subcaption{QR forward flux slice.}
+\subcaption{QR scalar flux slice.}
 \end{subfigure}
 \\
 \begin{subfigure}{\textwidth}
 \centering
 \includegraphics[max height=0.445\textheight]
 {img/portal-fwd-flux-gkn04.eps}
-\subcaption{Galerkin forward flux slice.}
+\subcaption{Galerkin scalar flux slice.}
 \end{subfigure}
 \end{figure}
 \clearpage
@@ -1318,16 +1285,16 @@ LDFE/QR             & 2\E{-5}             & 2.09118\E{0}           & 2.3756\E{-1
 \centering
 \includegraphics[max height=0.445\textheight]
 {img/portal-fwd-flux-ldfe01.eps}
-\subcaption{LDFE forward flux slice.}
+\subcaption{LDFE scalar flux slice.}
 \end{subfigure}
 \\
 \begin{subfigure}{\textwidth}
 \centering
 \includegraphics[max height=0.445\textheight]
 {img/portal-fwd-flux-ldo11.eps}
-\subcaption{LDO forward flux slice.}
+\subcaption{LDO scalar flux slice.}
 \end{subfigure}
-\caption{Simplified portal monitor scenario forward scalar flux slices.}
+\caption{Simplified portal monitor scenario scalar photon flux slices.}
 \label{cargo-fwd-slices}
 \end{figure}
 
@@ -1356,7 +1323,7 @@ LDFE/QR             & 2\E{-5}             & 2.09118\E{0}           & 2.3756\E{-1
 {img/portal-flux-diff-ldfe.eps}
 \subcaption{LDO/LDFE flux relative difference.}
 \end{subfigure}
-\caption{Simplified portal monitor scenario forward scalar flux relative
+\caption{Simplified portal monitor scenario scalar photon flux relative
          difference slices.}
 \label{cargo-fwd-diff-rel}
 \end{figure}
@@ -1365,15 +1332,15 @@ LDFE/QR             & 2\E{-5}             & 2.09118\E{0}           & 2.3756\E{-1
 %---------------------------------------------------------------------------%%
 \subsection{Summary}
 
-For the test cases here, we have compared the forward scalar flux solutions
-resultant from solving the LDO equations against those arising from solving the
+For the test cases here, we have compared the scalar flux solutions resultant
+from solving the LDO equations against those arising from solving the
 traditional discrete ordinates equations with a small variety of standard
-quadrature set types. In
-each test case, the results from solving the LDO equations best matched those
-from using the QR quadrature set in the traditional discrete ordinates
-formulation. Additionally, for the benchmark test case, the LDO equations
-produced results that were commensurate to those of all standard quadrature
-sets when the deterministic results were compared against experimental values.
+quadrature set types. In each test case, the results from solving the LDO
+equations best matched those from using the QR quadrature set in the
+traditional discrete ordinates formulation. Additionally, for the benchmark
+test case, the LDO equations produced results that were commensurate to those
+of all standard quadrature sets when the deterministic results were compared
+against experimental values.
 
 %---------------------------------------------------------------------------%%
 \section{Conclusions and Future Work}
