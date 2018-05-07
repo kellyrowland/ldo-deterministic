@@ -796,12 +796,14 @@ $z = 140$ cm.
 \end{table}
 
 The composition of the neutron source block is a homogenization of water,
-zirconium, and uranium and was calculated based on the geometry and composition
-of the Rowlands UO$_2$ pin cell benchmark specification \cite{pincell}. The
-source is a U-235 fission 
-spectrum that is uniformly distributed throughout the homogenized material. The
-compositions of air, carbon steel, and water were taken from the Compendium of 
-Material Composition Data for Radiation Transport Modeling \cite{pnnl}.
+zirconium, and uranium and was calculated based on the geometry and
+composition of the Rowlands UO$_2$ pin cell benchmark specification
+\cite{pincell}. The source is a U-235 fission  spectrum that is uniformly
+distributed throughout the homogenized material. The compositions of air,
+carbon steel, and water were taken from the Compendium of  Material
+Composition Data for Radiation Transport Modeling \cite{pnnl}. For this
+scenario, we are intested in the flux solutions at the end of the steel
+plate.
 
 %%---------------------------------------------------------------------------%%
 \subsection{Dog-Legged Void Neutron (DLVN)}
@@ -826,7 +828,8 @@ mesh was imposed over the entire problem, with voxels measuring 1 inch per side.
 The neutron source in this problem is a Cf-252 point source located at the 
 center of the $x-$ and $y-$directions and at $z = 9$ inches.
 This point source was approximated as a small volumetric source in the tests in
-this work.
+this work. We are interested in the forward flux solutions at the various detector
+locations shown in Figure \ref{dlvn}.
 
 The experimental configuration is symmetric about the $y-z$ plane at $x = 0$
 and so is usually simulated with a reflecting boundary at $x = 0$ and vacuum
@@ -863,7 +866,8 @@ In Figure \ref{p1}, the different colors represent different materials. The NaI
 detectors are red and the gray material is concrete. The two types of material
 blocks are iron, shown in green, and polyethylene, shown in white. The steel
 cargo container surrounds the particle source and material blocks and is a
-semitransparent blue.
+semitransparent blue. Here we are interested in the flux solutions at the four
+detector locations.
 
 A non-uniform Cartesian mesh that captures all of the problem's material
 boundaries was constructed for this simulation. The voxels are nominally 10 cm
@@ -960,8 +964,8 @@ inherent to deterministic calculations \cite{wilsonslaybaugh}.
 
 Table \ref{steel-fwd-diff-table} lists the minimum, maximum, and average
 differences between various quadrature types for the flux slices plotted in
-Figure \ref{steel-fwd-diff-rel}. We compare the representative LDO flux
-solution to the solutions from the three standard representative quadrature
+Figure \ref{steel-fwd-diff-rel}. We compare the LDO flux
+solution to the solutions from the three standard quadrature
 types and also compare the Galerkin and LDFE results against the QR result. On
 average, the LDO scalar flux solution matches the QR flux solution more
 closely than it matches either the Galerkin or LDFE flux solutions.
@@ -989,7 +993,7 @@ note that the  scalar flux solutions from the LDO equations capture the same
 physical trends as the standard quadrature type solutions and also that the
 LDO flux solution most closely matches that using the QR quadrature set.
 Additionally, Table \ref{steel-fwd-diff-table} shows an average difference of
-2.2\% between the plotted flux solutions from the representative LDO and QR
+2.2\% between the plotted flux solutions from the LDO and QR
 quadrature sets, which is the lowest average difference seen in the
 comparisons here. As QR quadratures are commonly used in \sn\ calculations,
 the relative agreement of the LDO scalar flux with the QR scalar flux
@@ -1040,7 +1044,7 @@ motivates further exploration of the LDO scalar flux solutions.
 {img/steel-flux-diff-ldfe.eps}
 \subcaption{LDO/LDFE flux rel. diff.}
 \end{subfigure}
-\caption{Steel plate  scalar flux relative difference slices.}
+\caption{Steel plate scalar flux relative difference slices.}
 \label{steel-fwd-diff-rel}
 \end{figure}
 
@@ -1048,18 +1052,18 @@ motivates further exploration of the LDO scalar flux solutions.
 %---------------------------------------------------------------------------%%
 \subsection{Dog-Legged Void Neutron (DLVN)}
 
-For the DLVN test case, we present flux slice plots for the same representative
+For the DLVN test case, we present flux slice plots for the same 
 quadrature sets. Although the entire DLVN
 experimental geometry was simulated, here we plot only half of the
 configuration; this is the typical view of the benchmark seen in the
 literature.
 
 Figure \ref{dlvn-fwd-slices} shows the scalar flux for each of the
-representative quadrature sets at the midplane of $y = 27$ inches (68.58 cm).
+quadrature sets at the midplane of $y = 27$ inches (68.58 cm).
 Each of the plots has outlines of the material boundaries with the detector
 locations delineated as well. As expected, the flux is highest at the neutron
 source and decreases as particles move through the experimental configuration.
-With this, we again look at the differences between the representative LDO flux
+With this, we again look at the differences between the LDO flux
 and the three other quadrature types. 
 
 As with the previous test case, the flux differences 
@@ -1072,7 +1076,7 @@ steel plate in water test case, the LDO scalar flux best matches the QR scalar
 flux and the largest differences are seen between the LDO and Galerkin scalar
 flux plots. Looking at Figure \ref{dlvn-fwd-diff-gkn}, the areas of greatest
 discrepancy appear as ray effects; the relative coarseness of the
-representative Galerkin quadrature set angular mesh is likely the cause of
+Galerkin quadrature set angular mesh is likely the cause of
 this. This is visibly pronounced in the DLVN case because of the geometrically
 small particle source. Ray effects are also likely the source of the 
 LDO/Galerkin discrepancy seen for the steel plate embedded in water, but
@@ -1212,7 +1216,7 @@ LDFE/QR             & 3\E{-5}             & 2.67\E{-1}  & 5.05\E{-2}
 Lastly, we look at the simplified portal monitor problem with the small photon
 source. Of the test cases presented here, the flux solutions differ most
 greatly for this problem. Figure \ref{cargo-fwd-slices} shows scalar flux
-solutions for the representative quadrature sets with the material pallets,
+solutions for the various quadrature sets with the material pallets,
 detector array, and shipping container outlines overlaid on the plots. Flux
 slices are plotted at the midplane of $z = 243.84$ cm (96 inches). All of the
 flux solutions plotted in Figure \ref{cargo-fwd-slices} display ray effects
@@ -1346,17 +1350,29 @@ that best matched the experimental values.
 \label{sec:conclusions}
 
 In this work, we have seen that the LDO equations' scalar flux solutions are
-comparable to those of standard quadrature types. Of particular interest is
-the proximity of the LDO solutions to the QR solutions, as QR scalar flux
-solutions are commonly used for input in Monte Carlo variance reduction
-parameter generation and a future publication will assess the LDO equations'
-scalar flux solutions' efficacy as input for Monte Carlo calculation biasing.
-The deterministic calculations performed here are an important step towards
-that work; we have verified the accuracy of the LDO equations' solutions
-relative to those of standard quadrature types.
-% Again, this needs to be reframed. The potential use of LDO in general is relevant.
-% Focus on the flexibility and their accuracy.
-% I'm assuming you're going to add a bit more here? 
+comparable to those of standard quadrature types for both neutron and photon
+transport problems. The LDO equations' scalar flux solutions were found to be
+commensurate with those of the standard quadrature types when comparing the
+flux solutions in the context of the experimental benchmark test case
+examined. Furthermore, when comparing deterministic solutions to the
+experimental benchmark flux measurements, the LDO equations produce the best
+results; the LDO flux solutions best match experimental values at three out of
+the six detector locations.
+
+This demonstration of the accuracy of the LDO equations in a full-scale
+transport code opens the door to their strategic use for problems containing
+strong angular anisotropies or in which specific directions are of particular
+interest. One immediate next step might be to assess scalar flux solutions
+from rotated versions of LDO quadrature sets. The point sets generated by
+Womersley and used in this work are rotationally invariant, so the LDO
+equations could still be constructed on these rotated point sets with the
+solutions studied for accuracy as a function of how ordinate directions align
+with problem geometry. In addition to this, we suggest undertaking
+investigations that use the interpolatory nature of the LDO representation
+once this ability has been realized in the various software frameworks
+involved. We expect that the LDO formulation and its flux solutions can be
+highly valuable for challenging calculations in which adequate incorporation
+of angular information is cruical to obtaining accurate solutions.
 
 \pagebreak
 \section*{Acknowledgments}
