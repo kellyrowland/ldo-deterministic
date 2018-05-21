@@ -238,13 +238,13 @@ The steady-state Boltzmann transport equation is
 \end{multline}
 
 \noindent where $\psi$ denotes the angular flux, $\vecr$ is the particle
-position, $E$ is the energy of the particle,
-and $\bo$ is the unit vector of direction of travel of the particle. Equation (\ref{eq:bte})
-is posed on a spatial domain $D\in\mathbb{R}^3$ with boundary condition
-$\psi\left(\vecr,E,\bo\right)=\psi_b\left(\vecr,E,\bo\right)$ for $r\in\partialD$, $\bo\cdot\hat{n}<0$ and
-$0<E<\infty$.
+position, $E$ is the energy of the particle, and $\bo$ is the unit vector of
+direction of travel of the particle. Equation \eqref{eq:bte} is posed on a
+spatial domain $D\in\mathbb{R}^3$ with boundary condition
+$\psi\left(\vecr,E,\bo\right)=\psi_b\left(\vecr,E,\bo\right)$ for
+$r\in\partial D$, $\bo\cdot\hat{n}<0$ and $0<E<\infty$.
 
-The \sn\ approximation of Eq. (\ref{eq:bte}) is
+The \sn\ approximation of Eq. \eqref{eq:bte} is
 
 \begin{multline}
 \bo_n \cdot \nabla \psi_n^g(\vecr) + \Sigma_t^g(\vecr)\psi_n^g(\vecr) = \\
@@ -295,12 +295,11 @@ moments''. Here, $\Ye{\ell m}{n}$ and $\Yo{\ell m}{n}$ are the ``even'' and
 \label{eq:sph_o}
 \end{equation}
 
-\noindent In Eqs. \ref{eq:sph_e} and \ref{eq:sph_o},
+\noindent In Eqs. \eqref{eq:sph_e} and \eqref{eq:sph_o},
 $P_{\ell m}(\cos\theta)$ is the associated Legendre polynomial and
 $(\theta,\varphi)$ are polar and azimuthal angles, respectively. 
-
-See, for example, \cite{denovo} and references therein for a detailed derivation 
-and discussion of Eq.(\ref{eq:sn}).
+See, for example, Reference \cite{denovo} and references therein for a
+detailed derivation  and discussion of Equation \eqref{eq:sn}.
 
 %%---------------------------------------------------------------------------%%
 \subsection{Lagrange Discrete Ordinates (LDO) Equations}
@@ -328,7 +327,7 @@ the representation
 \begin{equation}
   \psi(\vecr,E,\bo) \approx \psi_N(\vecr,E,\bo) = \sum_{n=1}^{N}\psi_{n}(\vecr,E) L_n\left(\bo\right),
 \end{equation}
-where $\psi(\vecr,E,\bo)$ is the solution of Eq.(\ref{eq:bte}).
+where $\psi(\vecr,E,\bo)$ is the solution of Equation \eqref{eq:bte}.
 
 The notable differences between the LDO equations and the classical \sn\
 equations can be summarized as:
@@ -377,7 +376,7 @@ operator form of the traditional discrete ordinates equations is
 \end{align}
 
 \noindent The operators will be defined below, with the exception of $\ve{L}$,
-the transport operator. When solving Equation \ref{l_inv}, the operation
+the transport operator. When solving Equation \eqref{l_inv}, the operation
 $\ve{L}^{-1}$ is referred to as a ``sweep''; $\ve{L}$ is implicitly formed as a
 lower-left triangular matrix and is inverted by ``sweeping'' through the
 spatial mesh in the direction of particle flow \cite{exmm}.
@@ -451,7 +450,7 @@ used to project harmonic moments onto discrete angle space and is defined as
 \end{equation}
 
 \noindent Note that $[\ve{M}]$ is dependent only on angle and is therefore the
-same for each energy group. Recall that in Equation \ref{mtod}, $P$ is the \pn\
+same for each energy group. Recall that in Equation \eqref{mtod}, $P$ is the \pn\
 order. The operator $\ve{D}$ is the ``discrete-to-moment''
 matrix; it is used to calculate the moments of the angular flux from discrete
 angular flux values. $\ve{D}$ is calculated as $\ve{M}^\top\ve{W}$, where
@@ -525,10 +524,10 @@ $\ve{L^{-1}} = \ve{I}\ve{L^{-1}} = \ve{D}\ve{L^{-1}}$, we then have
 \label{ldo_op}
 \end{equation}
 
-\noindent Equation \ref{ldo_op} is in the same form as Equation \ref{l_inv},
+\noindent Equation \eqref{ldo_op} is in the same form as Equation \eqref{l_inv},
 so we can apply the same solution techniques to both sets of equations.
 
-In contrast to Equation \ref{l_inv}, however, Equation \ref{ldo_op} contains
+In contrast to Equation \eqref{l_inv}, however, Equation \eqref{ldo_op} contains
 the Lagrange interpolation matrix $\ve{J}$ rather than the moment-to-discrete
 operator $\ve{M}$, and $\ve{\tilde{S}}$ contains the new formulation of
 scattering cross sections specific to the LDO equations. Additionally, when
@@ -574,7 +573,7 @@ again defined over the range $g\in[0,G-1]$, we have
 
 \noindent where the block matrix notation still holds. The angular flux
 coefficient vector and external source vector are formed as listed in Equation
-\ref{psiv}. The operator [$\ve{J}$] performs the Lagrange interpolation. It is
+\eqref{psiv}. The operator [$\ve{J}$] performs the Lagrange interpolation. It is
 constructed as the inverse of the Gram matrix, $\ve{G}$, which is calculated as
 
 \begin{equation}
@@ -610,22 +609,23 @@ P_{\ell}(\bo_n \cdot\bo_m).
 \label{eq:ldosig}
 \end{equation}
 
-\noindent In Equation \ref{eq:ldosig}, $\Sigg{\ell}$ are the same cross section 
+\noindent In Equation \eqref{eq:ldosig}, $\Sigg{\ell}$ are the same cross section 
 coefficients that are stored in the traditional scattering matrix given in
-Equation \ref{denovo_scatter}. We again note that the operator $\ve{D}$ is
+Equation \eqref{denovo_scatter}. We again note that the operator $\ve{D}$ is
 replaced by the identity matrix in the LDO formulation; incorporation of the
 quadrature set weights in the LDO equations is 
 discussed in Section \ref{sec:flux}\ 
 
-In Equations \ref{ldo_scatter} and \ref{eq:ldosig}, $L'$, the order of the scattering expansion,
-depends on the value of $L'$ relative to $L$. If $L'\le L$, then there is no truncation
-of the scattering kernel. If, however, $L' > L$, then the scattering kernel is truncated
-to a maxium degree $L$. For implementation reasons, we require values of $\Sigg{\ell}$ to exist for all
-$\ell \in [0,L]$, so we typically set $L$ equal to the same 
-scattering expansion \pn\ order $P$ in Equations
-\ref{mtod} -- \ref{denovo_scatter}. One could, for example, have $L' < L$ and simply set $\Sigg{\ell}=0$ for
-$\ell> L'$. This would allow one to resolve anisotropic behavior due to, for example, a beam boundary source but
-consider isotropic scattering. 
+In Equations \eqref{ldo_scatter} and \eqref{eq:ldosig}, $L'$, the order of the
+scattering expansion, depends on the value of $L'$ relative to $L$. If 
+$L'\le L$, then there is no truncation of the scattering kernel. If, however,
+$L' > L$, then the scattering kernel is truncated to a maximum degree $L$. For
+implementation reasons, we require values of $\Sigg{\ell}$ to exist for all
+$\ell \in [0,L]$, so we typically set $L$ equal to the same scattering
+expansion \pn\ order $P$ in Equations \eqref{mtod} -- \eqref{denovo_scatter}. One
+could, for example, have $L' < L$ and simply set $\Sigg{\ell}=0$ for $\ell> L'$.
+This would allow one to resolve anisotropic behavior due to, for example,
+a beam boundary source but consider isotropic scattering.
 
 To summarize, space and energy are handled in the same way between the two
 different formulations, while angular discretization and scattering are handled
@@ -693,7 +693,7 @@ Q &= (a \times 1),\      &Q_g      &= (NCE \times 1).
   \end{aligned}
 \end{equation*}
 
-\noindent Again, we define $a$ and $b$ as calculated in Equation \ref{eq:dims}.
+\noindent Again, we define $a$ and $b$ as calculated in Equation \eqref{eq:dims}.
 The operator sizes of the LDO formulation are then
 
 \begin{alignat*}{3}
@@ -725,7 +725,7 @@ calculated for a given spatial cell and energy group as
 \label{eq:scalar_flux}
 \end{equation}
 
-\noindent Thus, based on Equation \ref{eq:scalar_flux}, Denovo only retrieves
+\noindent Thus, based on Equation \eqref{eq:scalar_flux}, Denovo only retrieves
 the first entry of the angular flux moment storage vector when called upon to
 calculate the scalar flux.
 
@@ -741,7 +741,7 @@ weighted sum of the angular flux moments:
 set and the angular flux coefficients are those values stored in the Denovo
 flux moment vector. In order to keep the Denovo scalar flux output 
 functionality consistent between LDO quadratures and other quadrature sets, the
-scalar flux value calculated in Equation \ref{eq:scalar_flux_ldo} is multiplied
+scalar flux value calculated in Equation \eqref{eq:scalar_flux_ldo} is multiplied
 by $\tfrac{1}{4\pi}$ and written into the first entry of the flux moment
 storage vector after the calculation has finished.
 
@@ -1081,7 +1081,7 @@ With this, we again look at the differences between the LDO flux
 and the three other quadrature types. 
 
 As with the previous test case, the flux differences 
-are calculated with Equation \ref{flux-diff}. In the DLVN scenario, the 
+are calculated with Equation \eqref{flux-diff}. In the DLVN scenario, the 
 differences stem from the source location. This is not surprising; the particle
 source here is approximately a point source and so these differences appear in
 the form of ray effects, where the discrete angles in the LDO quadrature set do
@@ -1386,7 +1386,7 @@ investigations that use the interpolatory nature of the LDO representation
 once this ability has been realized in the various software frameworks
 involved. We expect that the LDO formulation and its flux solutions can be
 highly valuable for challenging calculations in which adequate incorporation
-of angular information is cruical to obtaining accurate solutions.
+of angular information is crucial to obtaining accurate solutions.
 
 \pagebreak
 \section*{Acknowledgments}
