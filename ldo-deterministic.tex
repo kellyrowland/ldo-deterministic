@@ -3,9 +3,9 @@
 %set capital Roman numeral section headings
 %set capital Aramaic letters subsection headings
 %set capital Arabic numbers subsubsection headings
-\renewcommand\thesection{\Roman{section}.}
-\renewcommand\thesubsection{\thesection\Alph{subsection}.}
-\renewcommand\thesubsubsection{\thesubsection\arabic{subsubsection}.}
+\renewcommand{\thesection}{\Roman{section}.}
+\renewcommand{\thesubsection}{\thesection\Alph{subsection}.}
+\renewcommand{\thesubsubsection}{\thesubsection\arabic{subsubsection}.}
 
 %set capital Roman numeral table numeration
 \renewcommand*\thetable{\Roman{table}} 
@@ -13,9 +13,9 @@
 %package needed for next lines
 %makes section headings bold and upper case characters
 %makes subsubsection headings in italics
-\usepackage[explicit]{titlesec}
-\titleformat{\section}{\bfseries}{\thesection}{1em}{\MakeUppercase{#1}}
-\titleformat{\subsubsection}{\itshape}{\thesubsubsection}{1em}{#1}
+% \usepackage[explicit]{titlesec}
+% \titleformat{\section}{\bfseries}{\Roman{section}}{1em}{\MakeUppercase{#1}}
+% \titleformat{\subsubsection}{\itshape}{\thesubsubsection}{1em}{#1}
 
 %\linespread{2}       %option 1 for making text double-spaced
 \usepackage{setspace} %option 2 for making text double-spaced
@@ -161,6 +161,7 @@ Keywords: quadrature; Lagrange; discrete ordinates; transport
 \pagebreak
 
 %%---------------------------------------------------------------------------%%
+
 \section{Introduction}
 \label{sec:intro}
 
@@ -1000,7 +1001,10 @@ than do either of the Galerkin and LDFE flux solutions.
 \caption{Steel plate scalar flux extremal and average relative differences.}
 \label{steel-fwd-diff-table}
 \begin{tabular}{l|ccc}
-\textbf{Comparison} & \textbf{Min. Diff.} & \textbf{Max. Diff.} & \textbf{Avg. Diff.} 
+\textbf{Comparison} & 
+\textbf{\begin{tabular}[c]{@{}l@{}}Minimum\\ Difference\end{tabular}} &
+\textbf{\begin{tabular}[c]{@{}l@{}}Maximum\\ Difference\end{tabular}} &
+\textbf{\begin{tabular}[c]{@{}l@{}}Average\\ Difference\end{tabular}}
 \\ \hline
 LDO/QR              & 6\E{-6}             & 1.09\E{-1}       & 2.21\E{-2}
 \rule{0pt}{2.6ex} \\ 
@@ -1119,9 +1123,9 @@ for each detector location emphasized.
 \caption{DLVN benchmark experimental and simulated scalar flux values [n/cm$^2$/s].}
 \label{dlvn-fwd-det}
 \begin{tabular}{l|ccccccc}
-              & Det. \#5       & Det. \#9       & Det. \#11      & Det. \#12
-              & Det. \#13      & Det. \#14 \\ \hline
-Exp. Flux     & 6.97\E{-8}     & 1.57\E{-7}     & 8.81\E{-6}     & 2.60\E{-7}
+              & Detector 5       & Detector 9  & Detector 11     & Detector 12
+              & Detector 13      & Detector 14 \\ \hline
+Experimental  & 6.97\E{-8}     & 1.57\E{-7}     & 8.81\E{-6}     & 2.60\E{-7}
               & 1.42\E{-6}     & 2.74\E{-7}     \rule{0pt}{2.6ex} \\
 QR            & 4.98\E{-8}     & 1.68\E{-7}     & 8.65\E{-5}     & 4.92\E{-7}
               & 2.71\E{-6}     & 1.45\E{-6}     \\
@@ -1140,8 +1144,8 @@ LDO           & 4.56\E{-8}     & 1.39\E{-7}     & 7.88\E{-5}     & 4.28\E{-7}
          flux values.}
 \label{dlvn-fwd-det-diff}
 \begin{tabular}{l|ccccccc}
-              & Det. \#5       & Det. \#9        & Det. \#11       & Det. \#12
-              & Det. \#13      & Det. \#14       \\ \hline
+              & Detector 5       & Detector 9    & Detector 11    & Detector 12
+              & Detector 13      & Detector 14   \\ \hline
 QR            & \textbf{25.58} & 6.89            & 881.94          & 89.09
               & 90.63          & 428.81          \\
 Galerkin      & 53.48          & \textbf{6.37}   & 829.72          & 70.56
@@ -1172,7 +1176,10 @@ including the LDO flux solution (5\% difference versus 8.4\% difference).
          differences.}
 \label{dlvn-fwd-diff-table}
 \begin{tabular}{l|ccc}
-\textbf{Comparison} & \textbf{Min. Diff.} & \textbf{Max. Diff.} & \textbf{Avg. Diff.} 
+\textbf{Comparison} & 
+\textbf{\begin{tabular}[c]{@{}l@{}}Minimum\\ Difference\end{tabular}} &
+\textbf{\begin{tabular}[c]{@{}l@{}}Maximum\\ Difference\end{tabular}} &
+\textbf{\begin{tabular}[c]{@{}l@{}}Average\\ Difference\end{tabular}}
 \\ \hline
 LDO/QR              & 2\E{-4}             & 8.40\E{-1}  & 8.44\E{-2} \rule{0pt}{2.6ex} \\ 
 LDO/Galerkin        & 1\E{-6}             & 2.14\E{0}   & 2.42\E{-1}      \\
@@ -1278,7 +1285,10 @@ fair agreement.
          differences.}
 \label{cargo-fwd-diff-table}
 \begin{tabular}{l|ccc}
-\textbf{Comparison} & \textbf{Min. Diff.} & \textbf{Max. Diff.} & \textbf{Avg. Diff.} 
+\textbf{Comparison} & 
+\textbf{\begin{tabular}[c]{@{}l@{}}Minimum\\ Difference\end{tabular}} &
+\textbf{\begin{tabular}[c]{@{}l@{}}Maximum\\ Difference\end{tabular}} &
+\textbf{\begin{tabular}[c]{@{}l@{}}Average\\ Difference\end{tabular}}
 \\ \hline
 LDO/QR              & 1\E{-6}             & 1.43\E{2}           & 3.07\E{-1}
 \rule{0pt}{2.6ex}   \\
