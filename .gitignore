@@ -1,10 +1,14 @@
-*.pdf
 *.aux
 *.bbl
 *.blg
+*.dvi
 *.log
 *.out
+*.pdf
+*.sh
 *.spl
 *.synctex.gz
+*.tar
 *.tex.backup
 *.tex.bak
+*.txt

@@ -268,8 +268,10 @@ harmonic expansion, denoted as $P$ in Eq. \eqref{eq:sn}, is known as the
 \label{eq:quadrule}
 \end{equation}
 %
-where $N$ is the number of ordinates. The scattering source is expanded in terms
-of spherical harmonics:
+where $N$ is the number of ordinates. In a spatial cell centered at the
+$i^{th}$ position along the $x$-axis, the $j^{th}$ position along the
+$y$-axis, and the $k^{th}$ position along the $z$-axis, the scattering
+source is expanded in terms of spherical harmonics:
 %
 \begin{equation}
 \phi_{\ell,m,i,j,k}^{g}=\sum_{n=1}^N \Ye{\ell m}{n}w_n\psi^{g,n}_{i,j,k}\ \text{ and }\
@@ -278,7 +280,8 @@ of spherical harmonics:
 \end{equation}
 %
 where $\phi$ and $\vartheta$ are referred to as the ``angular flux
-moments''. Here, $\Ye{\ell m}{n}$ and $\Yo{\ell m}{n}$ are the ``even'' and
+moments''. The indices $i,j,k$ 
+Here, $\Ye{\ell m}{n}$ and $\Yo{\ell m}{n}$ are the ``even'' and
 ``odd'' real components of the spherical harmonic functions, defined as
 \cite{exmm}
 %
@@ -319,7 +322,8 @@ without energy discretization, are written as
 %
 where $N$ is the number of discrete angles used in the formulation
 and is a property of the maximum degree of integration of the quadrature set
-on which the equations are based, $L_n$ is the $n^{th}$ Lagrange function, and
+on which the equations are based, $L_n$ is the $n^{th}$ Lagrange function, the
+angle brackets denote an inner product, and
 $\Sigma_{s,L}$ is the scattering cross section restricted to maximum degree
 $L$. In the LDO formalism, the unknowns $\psi_{n}(\vecr,E)$ are coefficients in 
 the representation
@@ -847,7 +851,9 @@ mesh was imposed over the entire problem, with voxels measuring 1 inch per side.
 The neutron source in this problem is a Cf-252 point source located at the 
 center of the $x-$ and $y-$directions and at $z = 9$ inches.
 This point source was approximated as a small volumetric source in the tests in
-this work. We are interested in the forward flux solutions at the various detector
+this work; the source used is a sphere of radius 1.025 cm with its center at
+$x = 0$ cm (0 in), $y =$ 68.58 cm (27 in), and $z = 22.86$ cm (9 in). 
+We are interested in the forward flux solutions at the various detector
 locations shown in Figure \ref{dlvn}; this test case scenario is of interest 
 because the streaming pathways in the configuration make the problem computationally
 challenging. Additionally, the availability of experimental flux solution data
