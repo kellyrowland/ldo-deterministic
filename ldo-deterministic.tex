@@ -170,9 +170,9 @@ dimensional neutral particle transport is becoming increasingly commonplace.
 One common solution approach is to discretize all of the independent variables
 of the steady-state Boltzmann transport equation and solve the resultant
 systems of equations deterministically. The classic discrete ordinates (\sn)
-method is well-known and frequently used in deterministic transport, but it
-can suffer from inaccuracies in scalar particle flux solutions brought about
-by angular discretization (termed ``ray effects'').
+method is well-known and frequently used in deterministic transport \cite{lm},
+but it can suffer from inaccuracies in scalar particle flux solutions brought
+about by angular discretization known as ``ray effects'' \cite{lathrop}.
 
 The Lagrange Discrete Ordinates (LDO) equations, developed by Ahrens
 \cite{ahrens}, are formally equivalent to the classic \sn\ equations; they
@@ -861,10 +861,13 @@ provides actual values against which to compare the calculated solutions.
 
 The experimental configuration is symmetric about the $y-z$ plane at $x = 0$
 and so is usually simulated with a reflecting boundary at $x = 0$ and vacuum
-boundaries on all other sides of the configuration. For the tests in this work,
-the use of reflecting boundary conditions was not available, so the model used 
-was constructed to represent the entire experimental geometry configuration.
-Vacuum boundary conditions were applied to the outside of the entire problem.
+boundaries on all other sides of the configuration. For the tests in this
+work, the use of reflecting boundary conditions was not available in
+conjuction with the use of LDO quadrature sets, as the interpolation in angle
+required for this particular functionality has not yet been implemented in the
+software framework.  With this, the model used here was constructed to
+represent the entire experimental geometry configuration. Vacuum boundary
+conditions were applied to the outside of the entire problem.
 
 %%---------------------------------------------------------------------------%%
 \subsection{Simplified Portal Monitor}
@@ -945,7 +948,9 @@ order 4 and has 24 angles. This set was chosen because its corresponding \pn\
 order is 5 and so the scattering data used matches that of the other quadrature
 types. At the time of this writing, Galerkin quadrature sets are implemented in
 the Exnihilo framework with the restriction that the \pn\ order be one greater
-than the \sn\ order.
+than the \sn\ order. Note that the number of angles reported for each quadrature
+set is over all eight octants. Unlike the other quadrature types, the LDO
+quadrature set does not exhibit octahedral symmetry in angle. % thus...?
 
 %---------------------------------------------------------------------------%%
 \section{Results}
@@ -1099,20 +1104,20 @@ source and decreases as particles move through the experimental configuration.
 With this, we again look at the differences between the LDO flux
 and the three other quadrature types. 
 
-As with the previous test case, the flux differences 
-are calculated with Equation \eqref{flux-diff}. In the DLVN scenario, the 
-differences stem from the source location. This is not surprising; the particle
-source here is approximately a point source and so these differences appear in
-the form of ray effects, where the discrete angles in the LDO quadrature set do
-not overlap with the angles in a given standard quadrature set. Similar to the
-steel plate in water test case, the LDO scalar flux best matches the QR scalar
-flux and the largest differences are seen between the LDO and Galerkin scalar
-flux plots. Looking at Figure \ref{dlvn-fwd-diff-gkn}, the areas of greatest
-discrepancy appear as ray effects; the relative coarseness of the
-Galerkin quadrature set angular mesh is likely the cause of
-this. This is visibly pronounced in the DLVN case because of the geometrically
-small particle source. Ray effects are also likely the source of the 
-LDO/Galerkin discrepancy seen for the steel plate embedded in water, but
+As with the previous test case, the flux differences are calculated with
+Equation \eqref{flux-diff}. In the DLVN scenario, the differences stem from
+the source location, as seen in Figure \ref{dlvn-fwd-diff-rel}. This is not
+surprising; the particle source here is approximately a point source and so
+these differences appear in the form of ray effects, where the discrete angles
+in the LDO quadrature set do not overlap with the angles in a given standard
+quadrature set. Similar to the steel plate in water test case, the LDO scalar
+flux best matches the QR scalar flux and the largest differences are seen
+between the LDO and Galerkin scalar flux plots. Looking at Figure 
+\ref{dlvn-fwd-diff-gkn}, the areas of greatest discrepancy appear as ray effects;
+the relative coarseness of the Galerkin quadrature set angular mesh is likely the
+cause of this. This is visibly pronounced in the DLVN case because of the
+geometrically small particle source. Ray effects are also likely the source of
+the  LDO/Galerkin discrepancy seen for the steel plate embedded in water, but
 they are lessened in that scenario by the larger volumetric source.
 
 Lastly, it is instructive to compare the results of the deterministic
@@ -1381,8 +1386,6 @@ the traditional discrete ordinates equations with a small variety of standard
 quadrature set types. In each test case, regardless of particle type, the
 results from solving the LDO equations best matched those from using the QR
 quadrature set in the traditional discrete ordinates formulation.
-Additionally, for the benchmark test case, the LDO equations produced results
-that best matched the experimental values.
 
 %---------------------------------------------------------------------------%%
 \section{Conclusions and Future Work}
@@ -1393,10 +1396,7 @@ comparable to those of standard quadrature types for both neutron and photon
 transport problems. The LDO equations' scalar flux solutions were found to be
 commensurate with those of the standard quadrature types when comparing the
 flux solutions in the context of the experimental benchmark test case
-examined. Furthermore, when comparing deterministic solutions to the
-experimental benchmark flux measurements, the LDO equations produce the best
-results; the LDO flux solutions best match experimental values at three out of
-the six detector locations.
+examined.
 
 This demonstration of the accuracy of the LDO equations in a full-scale
 transport code opens the door to their strategic use for problems containing
