@@ -615,12 +615,15 @@ P_{\ell}(\bo_n \cdot\bo_m).
 \label{eq:ldosig}
 \end{equation}
 %
-In Equation \eqref{eq:ldosig}, $\Sigg{\ell}$ are the same cross section 
+In Equation \eqref{eq:ldosig}, $\Sigg{\ell}$ are the same cross section
 coefficients that are stored in the traditional scattering matrix given in
-Equation \eqref{denovo_scatter}. We again note that the operator $\ve{D}$ is
-replaced by the identity matrix in the LDO formulation; incorporation of the
-quadrature set weights in the LDO equations is 
-discussed in Section \ref{sec:flux}\ 
+Equation \eqref{denovo_scatter}. Because the two different formulations are
+formally identical and use these same cross section coefficients, it is not
+expected that the LDO formulation is any more or less susceptible to negative
+flux moments than the traditional discrete ordinates equations. We again note
+that the operator $\ve{D}$ is replaced by the identity matrix in the LDO
+formulation; incorporation of the quadrature set weights in the LDO equations
+is discussed in Section \ref{sec:flux}\
 
 In Equations \eqref{ldo_scatter} and \eqref{eq:ldosig}, $L'$, the order of the
 scattering expansion, depends on the value of $L'$ relative to $L$. If 
@@ -983,12 +986,12 @@ flux difference is calculated as
 %
 \begin{equation}
 \phi_{\mathrm{diff}} = 
-\frac{\left|\phi_{\mathrm{LDO}}-\phi_{\mathrm{ref}}\right|}{\phi_{\mathrm{ref}}}\:,
+\frac{\left|\phi_{\mathrm{LDO}}-\phi_{\mathrm{std}}\right|}{\phi_{\mathrm{std}}}\:,
 \label{flux-diff}
 \end{equation}
 %
-where $\phi_{\mathrm{ref}}$ is the scalar flux calculated using the 
-standard quadrature set and is taken to be the reference value. For all three
+where $\phi_{\mathrm{std}}$ is the scalar flux calculated using the 
+standard quadrature set and is taken to be the baseline value. For all three
 of the standard quadrature sets, the area of greatest agreement with the LDO
 scalar flux is towards the bottom of the problem geometry, with discrepancies
 growing along the $z-$axis. The greatest difference can be seen between the LDO
@@ -1146,7 +1149,7 @@ geometrically small particle source. Ray effects are also likely the source of
 the  LDO/Galerkin discrepancy seen for the steel plate embedded in water, but
 they are lessened in that scenario by the larger volumetric source.
 
-Lastly, it is instructive to compare the results of the deterministic
+Even more, it is instructive to compare the results of the deterministic
 scalar flux solutions with the experimentally measured flux values at the
 detector locations. Table \ref{dlvn-fwd-det} lists the experimentally measured
 \cite{dlvn1991} and deterministically calculated scalar flux values at the
@@ -1276,10 +1279,10 @@ LDFE/QR             & 3\E{-5}             & 2.67\E{-1}  & 5.05\E{-2}
 \label{dlvn-fwd-diff-rel}
 \end{figure}
 
-Lastly, Table \ref{dlvn-stats} lists the reported run times and memory usage
-for each quadrature set used in the various simulations of the DLVN benchmark.
-We again see a drastic increase in run time when using an LDO quadrature set
-as well as an increased memory requirement.
+To conclude this section, Table \ref{dlvn-stats} lists the reported run times
+and memory usage for each quadrature set used in the various simulations of
+the DLVN benchmark. We again see a drastic increase in run time when using an
+LDO quadrature set as well as an increased memory requirement.
 
 \begin{table}[!htb]
 \centering
