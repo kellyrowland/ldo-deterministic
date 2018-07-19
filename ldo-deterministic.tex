@@ -645,6 +645,7 @@ operator sizing for the two formulations in the next section.
 
 %%---------------------------------------------------------------------------%%
 \subsection{Operator Sizes}
+\label{sec:op}
 
 To evaluate the feasibility of constructing and solving the LDO equations in
 Denovo, it is pertinent to look at the dimensions of the operator forms of each
@@ -1086,6 +1087,31 @@ motivates further exploration of the LDO scalar flux solutions.
 \label{steel-fwd-diff-rel}
 \end{figure}
 
+Finally, Table \ref{steel-stats} lists the reported run times and memory usage
+for each quadrature set used in this test case. The run time for the
+simulation using the LDO quadrature set is one order of magnitude higher than
+all other listed run times. This is most likely due to the octahedral
+asymmetry in angle exhibited by the LDO quadrature set; the KBA parallel sweep
+algorithm was written and implemented assuming that a given quadrature set has
+an equal number of angles among all octants. We also see that the simulation
+using the LDO quadrature set has a greater memory requirement than those with
+other quadrature types. Recalling Section \ref{sec:op}, this is to be
+expected; the sizes of the matrices in the LDO formulation scale with the
+number of angles used rather than the number of scattering moments.
+
+\begin{table}[!htb]
+\centering
+\caption{Steel plate simulation run times [minutes] and memory usage [MB].}
+\label{steel-stats}
+\begin{tabular}{l|cc}
+              & Run Time       & Memory Usage       \\ \hline
+QR            & 2.54 & 1925         \\
+Galerkin      & 1.95 & 1880         \\
+LDFE          & 1.98 & 1922         \\
+LDO           & 84.89 & 4458
+\end{tabular}
+\end{table}
+
 \FloatBarrier
 %---------------------------------------------------------------------------%%
 \subsection{Dog-Legged Void Neutron (DLVN)}
@@ -1250,6 +1276,24 @@ LDFE/QR             & 3\E{-5}             & 2.67\E{-1}  & 5.05\E{-2}
 \label{dlvn-fwd-diff-rel}
 \end{figure}
 
+Lastly, Table \ref{dlvn-stats} lists the reported run times and memory usage
+for each quadrature set used in the various simulations of the DLVN benchmark.
+We again see a drastic increase in run time when using an LDO quadrature set
+as well as an increased memory requirement.
+
+\begin{table}[!htb]
+\centering
+\caption{DLVN simulation run times [minutes] and memory usage [MB].}
+\label{dlvn-stats}
+\begin{tabular}{l|cc}
+              & Run Time       & Memory Usage       \\ \hline
+QR            & 3.16 & 2728         \\
+Galerkin      & 1.76 & 2704         \\
+LDFE          & 3.63 & 2733         \\
+LDO           & 166.50 & 7829
+\end{tabular}
+\end{table}
+
 \FloatBarrier
 %%---------------------------------------------------------------------------%%
 \subsection{Simplified Portal Monitor}
@@ -1376,6 +1420,30 @@ LDFE/QR             & 2\E{-5}             & 2.09\E{0}           & 2.38\E{-1}
 \label{cargo-fwd-diff-rel}
 \end{figure}
 
+Finally, Table \ref{cargo-stats} states the reported run times and memory
+usage for each quadrature set used in the simplified portal monitor scenario.
+Similar trends are seen here as in the previous two test cases; using the LDO
+quadrature set requires more time and memory than any of the standard
+quadrature types. Again, we attribute the increase in run time with the LDO
+quadrature set to a breakdown in the parallel efficiency of the KBA sweep
+algorithm due to the different numbers of discrete angles in each octant.
+Additionally, the increased memory requirement when using the LDO quadrature
+is to be expected when considering how the operator sizes scale between the
+traditional discrete ordinates equations and the LDO formulation.
+
+\begin{table}[!htb]
+\centering
+\caption{Portal monitor simulation run times [minutes] and memory usage [MB].}
+\label{cargo-stats}
+\begin{tabular}{l|cc}
+              & Run Time       & Memory Usage       \\ \hline
+QR            & 1.35 & 4460         \\
+Galerkin      & 0.28 & 4474         \\
+LDFE          & 1.86 & 4461         \\
+LDO           & 59.35 & 13996
+\end{tabular}
+\end{table}
+
 \FloatBarrier
 %---------------------------------------------------------------------------%%
 \subsection{Summary}
@@ -1385,7 +1453,16 @@ resultant from solving the LDO equations against those arising from solving
 the traditional discrete ordinates equations with a small variety of standard
 quadrature set types. In each test case, regardless of particle type, the
 results from solving the LDO equations best matched those from using the QR
-quadrature set in the traditional discrete ordinates formulation.
+quadrature set in the traditional discrete ordinates formulation. In all
+cases, using an LDO quadrature set requires more time and memory than any of
+the standard quadrature types. We attribute the increased run time with the to
+a breakdown in the parallel efficiency of the KBA sweep algorithm due to the
+different numbers of discrete angles in each octant when using an LDO
+quadrature set. While operator sizes scale with the number of scattering
+moments used when using a standard quadrature set, the LDO formulation sees
+its operator sizes scale with the number of angles. With this, it is not
+surprising that the simulations with the LDO quadrature set have an increased
+memory requirement.
 
 %---------------------------------------------------------------------------%%
 \section{Conclusions and Future Work}
