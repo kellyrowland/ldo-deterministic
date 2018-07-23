@@ -1279,7 +1279,7 @@ LDFE/QR             & 3\E{-5}             & 2.67\E{-1}  & 5.05\E{-2}
 \label{dlvn-fwd-diff-rel}
 \end{figure}
 
-To conclude this section, Table \ref{dlvn-stats} lists the reported run times
+Table \ref{dlvn-stats} lists the reported run times
 and memory usage for each quadrature set used in the various simulations of
 the DLVN benchmark. We again see a drastic increase in run time when using an
 LDO quadrature set as well as an increased memory requirement.
@@ -1296,6 +1296,26 @@ LDFE          & 3.63 & 2733         \\
 LDO           & 166.50 & 7829
 \end{tabular}
 \end{table}
+
+To conclude this section, it behooves us to discuss results as a function of
+angular mesh refinement. We will do so in this section for the DLVN benchmark
+such that the demonstrated errors are those relative to actual measurements
+determined experimentally. In the interest of brevity, we have chosen one
+detector location at which to examine the percent differences between the
+experimental flux values and the simulated scalar flux values for all of the
+quadrature types evaluated in this work. Recalling Table
+\ref{dlvn-fwd-diff-table} and the interest in the challenges inherent in
+simulating the DLVN benchmark, we will look at Detector 11, as it has the
+highest associated errors. Calculation errors as a function of angular mesh
+refinement are shown for the different quadrature types in Figure
+\ref{dlvn-scale-all}.
+
+\begin{figure}[!htb]
+\centering
+\includegraphics{dlvn-error-scale-11.eps}
+\caption{\textcolor{red}{Caption.}}
+\label{dlvn-scale-all}
+\end{figure}
 
 \FloatBarrier
 %%---------------------------------------------------------------------------%%
