@@ -997,9 +997,7 @@ scalar flux is towards the bottom of the problem geometry, with discrepancies
 growing along the $z-$axis. The greatest difference can be seen between the LDO
 and Galerkin quadrature sets, while the LDO and QR quadrature sets agree best.
 The area of greatest discrepancy between the QR and LDO flux solutions is in
-the region of air just beyond the steel beam. We note here that this particular
-deviation is most likely due to issues in processing iron cross section data
-inherent to deterministic calculations \cite{wilsonslaybaugh}.
+the region of air just beyond the steel beam.
 
 Table \ref{steel-fwd-diff-table} lists the minimum, maximum, and average
 differences between various quadrature types for the flux slices plotted in
@@ -1204,7 +1202,7 @@ the experimental results for half of the detector locations, which is better
 than any of the standard quadrature types tested here. Table \ref{dlvn-fwd-diff-table} 
 lists the extreme and average values of the scalar flux relative
 difference slices shown in Figure \ref{dlvn-fwd-diff-rel}, with Galerkin/QR
-and LDFE/QR comparisons included for reference. We see that, on average, the
+and LDFE/QR comparisons included as a baseline. We see that, on average, the
 LDO flux solution matches the QR flux solution better than it matches those of
 the other quadrature types. However, in this case, the LDFE flux solution
 matches the QR flux solution on average better than any other quadrature type,
@@ -1297,25 +1295,67 @@ LDO           & 166.50 & 7829
 \end{tabular}
 \end{table}
 
-To conclude this section, it behooves us to discuss results as a function of
-angular mesh refinement. We will do so in this section for the DLVN benchmark
-such that the demonstrated errors are those relative to actual measurements
-determined experimentally. In the interest of brevity, we have chosen one
-detector location at which to examine the percent differences between the
-experimental flux values and the simulated scalar flux values for all of the
-quadrature types evaluated in this work. Recalling Table
+To conclude this section, it behooves us to discuss simulation results as a
+function of angular mesh refinement. We will do so in this section for the
+DLVN benchmark such that the demonstrated errors are those relative to actual
+measurements determined experimentally. In the interest of brevity, we have
+chosen one detector location at which to examine the percent differences
+between the experimental flux values and the simulated scalar flux values for
+all of the quadrature types evaluated in this work. Recalling Table
 \ref{dlvn-fwd-diff-table} and the interest in the challenges inherent in
 simulating the DLVN benchmark, we will look at Detector 11, as it has the
 highest associated errors. Calculation errors as a function of angular mesh
-refinement are shown for the different quadrature types in Figure
-\ref{dlvn-scale-all}.
+refinement are shown for the different quadrature types and mesh sizes in
+Figure \ref{dlvn-scale-all}.
+
+For the QR quadrature sets used in this study, the number of polar and
+azimuthal angles per octant were each set to the same value, with the values
+ranging from one per octant (for a total of eight angles) to nine per octant
+(for a total of 648 angles). For LDFE quadrature sets, if $N$ is the order of
+the quadrature, there are $4^{(N+1)}$ angles per octant \cite{exum}. Here, the
+LDFE quadrature orders used were one (128 total angles) and two (8192 total
+angles). For an \sn\ order $N$, a given Galerkin quadrature set has a total of
+$N(N+2)$ angles. The Galerkin quadrature orders used were two and four; the
+Galerkin quadrature sets used in this work have eight and 24 total angles,
+respectively. The LDO quadrature orders used span from three to 14, resulting
+in a range of 16 to 225 total discrete angles.
 
 \begin{figure}[!htb]
 \centering
 \includegraphics{dlvn-error-scale-11.eps}
-\caption{\textcolor{red}{Caption.}}
+\caption{Calculation percent error relative to experimental flux 
+         measurement at Detector 11 in the DLVN benchmark as a function of 
+         various quadratures' angular mesh refinement.}
 \label{dlvn-scale-all}
 \end{figure}
+
+In this plot we see that the percent error is highest at coarse angular mesh
+refinements and tends to decrease to a stable value as the mesh is refined; we
+note that, in general, approximately the same error value is achieved once the
+angular mesh of a given quadrature type has at least 100 discrete angles in
+total. Furthermore, we are particularly interested in the performance of the LDO
+quadrature sets as the angular mesh is refined in the new formulation. Figure
+\ref{dlvn-scale-ldo} shows the percent error relative to the experimentally
+measured flux values at all detector locations as a function of LDO angular
+mesh refinement.
+
+\begin{figure}[!htb]
+\centering
+\includegraphics{dlvn-error-scale-ldo.eps}
+\caption{Calculation percent error relative to experimental flux 
+         measurement at all detectors in the DLVN benchmark as a function of 
+         LDO quadratures' angular mesh refinement.}
+\label{dlvn-scale-ldo}
+\end{figure}
+
+Like the trends seen in Figure \ref{dlvn-scale-all}, Figure \ref{dlvn-scale-ldo}
+shows that the error in the calculations at all detector locations tends
+towards a stable value once the LDO quadrature set has at least 100 angles.
+Because this is the case for all quadrature types and the LDO quadrature
+simulations incur much greater runtimes relative to the other qudarature
+types, we limit the comparisons throughout this work to quadrature sets with
+slightly more than 100 total discrete angles (again, with the noted exception
+of the Galerkin simulations).
 
 \FloatBarrier
 %%---------------------------------------------------------------------------%%
@@ -1347,7 +1387,7 @@ Table \ref{cargo-fwd-diff-table} lists the minimum, maximum, and average
 values of the relative differences in the scalar flux solutions, shown in
 Figure \ref{cargo-fwd-diff-rel}. As with all of the previous cases,
 comparisons between the QR flux solution and the Galerkin and LDFE flux
-solutions are included for reference. None of the flux solutions in this case
+solutions are included for comparison. None of the flux solutions in this case
 show particularly good agreement on average; the closest solutions are the
 LDFE and QR flux solutions which have an average difference of about 24\%. Of
 the three standard quadrature types, the LDO flux solution matches the QR flux
