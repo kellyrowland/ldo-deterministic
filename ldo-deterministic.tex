@@ -281,6 +281,7 @@ source is expanded in terms of spherical harmonics:
 %
 where $\phi$ and $\vartheta$ are referred to as the ``angular flux
 moments''. The indices $i,j,k$ 
+% What is this supposed to be??
 Here, $\Ye{\ell m}{n}$ and $\Yo{\ell m}{n}$ are the ``even'' and
 ``odd'' real components of the spherical harmonic functions, defined as
 \cite{exmm}
@@ -620,7 +621,9 @@ coefficients that are stored in the traditional scattering matrix given in
 Equation \eqref{denovo_scatter}. Because the two different formulations are
 formally identical and use these same cross section coefficients, it is not
 expected that the LDO formulation is any more or less susceptible to negative
-flux moments than the traditional discrete ordinates equations. We again note
+flux moments than the traditional discrete ordinates equations. 
+% good!
+We again note
 that the operator $\ve{D}$ is replaced by the identity matrix in the LDO
 formulation; incorporation of the quadrature set weights in the LDO equations
 is discussed in Section \ref{sec:flux}\
@@ -867,9 +870,9 @@ The experimental configuration is symmetric about the $y-z$ plane at $x = 0$
 and so is usually simulated with a reflecting boundary at $x = 0$ and vacuum
 boundaries on all other sides of the configuration. For the tests in this
 work, the use of reflecting boundary conditions was not available in
-conjuction with the use of LDO quadrature sets, as the interpolation in angle
-required for this particular functionality has not yet been implemented in the
-software framework.  With this, the model used here was constructed to
+conjunction with the use of LDO quadrature sets because the interpolation in angle
+required at the reflecting boundary has not yet been implemented in the
+software framework.  As a result, the model used here was constructed to
 represent the entire experimental geometry configuration. Vacuum boundary
 conditions were applied to the outside of the entire problem.
 
@@ -1091,21 +1094,24 @@ motivates further exploration of the LDO scalar flux solutions.
 Finally, Table \ref{steel-stats} lists the reported run times and memory usage
 for each quadrature set used in this test case. The run time for the
 simulation using the LDO quadrature set is one order of magnitude higher than
-all other listed run times. This is most likely due to the octahedral
-asymmetry in angle exhibited by the LDO quadrature set; the KBA parallel sweep
+all other listed run times. One of the main causes of the time difference is likely the octahedral
+asymmetry in angle exhibited by the LDO quadrature set. The KBA parallel sweep
 algorithm was written and implemented assuming that a given quadrature set has
-an equal number of angles among all octants. We also see that the simulation
+an equal number of angles among all octants, so asymmetric quadratures do not benefit as much from the angle pipelining of KBA. We also see that the simulation
 using the LDO quadrature set has a greater memory requirement than those with
-other quadrature types. Recalling Section \ref{sec:op}, this is to be
+other quadrature types. Recalling Section \ref{sec:op}, 
+% there's a period after the section ref that shouldn't be there
+this is to be
 expected; the sizes of the matrices in the LDO formulation scale with the
 number of angles used rather than the number of scattering moments.
+% It might be quite helpful to say something here to remind us why we're bothering to consider LDO if it's more expensive and uses more memory.
 
 \begin{table}[!htb]
 \centering
-\caption{Steel plate simulation run times [minutes] and memory usage [MB].}
+\caption{Steel plate simulation run times and memory usage.}
 \label{steel-stats}
 \begin{tabular}{l|cc}
-              & Run Time       & Memory Usage       \\ \hline
+              & Run Time [min]       & Memory Usage [MB]      \\ \hline
 QR            & 2.54 & 1925         \\
 Galerkin      & 1.95 & 1880         \\
 LDFE          & 1.98 & 1922         \\
@@ -1147,7 +1153,7 @@ geometrically small particle source. Ray effects are also likely the source of
 the  LDO/Galerkin discrepancy seen for the steel plate embedded in water, but
 they are lessened in that scenario by the larger volumetric source.
 
-Even more, it is instructive to compare the results of the deterministic
+Further, it is instructive to compare the results of the deterministic
 scalar flux solutions with the experimentally measured flux values at the
 detector locations. Table \ref{dlvn-fwd-det} lists the experimentally measured
 \cite{dlvn1991} and deterministically calculated scalar flux values at the
@@ -1281,13 +1287,14 @@ Table \ref{dlvn-stats} lists the reported run times
 and memory usage for each quadrature set used in the various simulations of
 the DLVN benchmark. We again see a drastic increase in run time when using an
 LDO quadrature set as well as an increased memory requirement.
+% anything positive to say?
 
 \begin{table}[!htb]
 \centering
-\caption{DLVN simulation run times [minutes] and memory usage [MB].}
+\caption{DLVN simulation run times and memory usage.}
 \label{dlvn-stats}
 \begin{tabular}{l|cc}
-              & Run Time       & Memory Usage       \\ \hline
+              & Run Time [min]       & Memory Usage [MB]      \\ \hline
 QR            & 3.16 & 2728         \\
 Galerkin      & 1.76 & 2704         \\
 LDFE          & 3.63 & 2733         \\
@@ -1295,10 +1302,10 @@ LDO           & 166.50 & 7829
 \end{tabular}
 \end{table}
 
-To conclude this section, it behooves us to discuss simulation results as a
-function of angular mesh refinement. We will do so in this section for the
-DLVN benchmark such that the demonstrated errors are those relative to actual
-measurements determined experimentally. In the interest of brevity, we have
+An important point of discussion is simulation results as a
+function of angular mesh refinement. We dive into this examination for the
+DLVN benchmark because the demonstrated errors are those relative to actual
+measurements determined experimentally rather than only other simulations. In the interest of brevity, we have
 chosen one detector location at which to examine the percent differences
 between the experimental flux values and the simulated scalar flux values for
 all of the quadrature types evaluated in this work. Recalling Table
@@ -1328,9 +1335,10 @@ in a range of 16 to 225 total discrete angles.
          various quadratures' angular mesh refinement.}
 \label{dlvn-scale-all}
 \end{figure}
+% can you make it so it's easier to tell what numbers are on the y axis?
 
-In this plot we see that the percent error is highest at coarse angular mesh
-refinements and tends to decrease to a stable value as the mesh is refined; we
+In this plot, we see that the percent error is highest at coarse angular mesh
+refinements and tends to decrease to a stable value as the mesh is refined. We
 note that, in general, approximately the same error value is achieved once the
 angular mesh of a given quadrature type has at least 100 discrete angles in
 total. Furthermore, we are particularly interested in the performance of the LDO
@@ -1338,13 +1346,14 @@ quadrature sets as the angular mesh is refined in the new formulation. Figure
 \ref{dlvn-scale-ldo} shows the percent error relative to the experimentally
 measured flux values at all detector locations as a function of LDO angular
 mesh refinement.
+% maybe specifically call out that LDO gives the lowest error in fig 8?
 
 \begin{figure}[!htb]
 \centering
 \includegraphics{dlvn-error-scale-ldo.eps}
 \caption{Calculation percent error relative to experimental flux 
          measurement at all detectors in the DLVN benchmark as a function of 
-         LDO quadratures' angular mesh refinement.}
+         LDO quadrature angular mesh refinement.}
 \label{dlvn-scale-ldo}
 \end{figure}
 
@@ -1493,13 +1502,14 @@ algorithm due to the different numbers of discrete angles in each octant.
 Additionally, the increased memory requirement when using the LDO quadrature
 is to be expected when considering how the operator sizes scale between the
 traditional discrete ordinates equations and the LDO formulation.
+% I was wondering this before, how can we tell if all the slowness is from pipelining? Is the larger memory also causing slowdown b/c of data access / communication or anything like that?
 
 \begin{table}[!htb]
 \centering
-\caption{Portal monitor simulation run times [minutes] and memory usage [MB].}
+\caption{Portal monitor simulation run times and memory usage.}
 \label{cargo-stats}
 \begin{tabular}{l|cc}
-              & Run Time       & Memory Usage       \\ \hline
+              & Run Time [min]      & Memory Usage [MB]      \\ \hline
 QR            & 1.35 & 4460         \\
 Galerkin      & 0.28 & 4474         \\
 LDFE          & 1.86 & 4461         \\
@@ -1511,8 +1521,7 @@ LDO           & 59.35 & 13996
 %---------------------------------------------------------------------------%%
 \subsection{Summary}
 
-For the test cases presented here, we have compared the scalar flux solutions
-resultant from solving the LDO equations against those arising from solving
+For the test cases presented, we have compared the scalar flux solutions from solving the LDO equations to those from solving
 the traditional discrete ordinates equations with a small variety of standard
 quadrature set types. In each test case, regardless of particle type, the
 results from solving the LDO equations best matched those from using the QR
@@ -1523,9 +1532,10 @@ a breakdown in the parallel efficiency of the KBA sweep algorithm due to the
 different numbers of discrete angles in each octant when using an LDO
 quadrature set. While operator sizes scale with the number of scattering
 moments used when using a standard quadrature set, the LDO formulation sees
-its operator sizes scale with the number of angles. With this, it is not
+its operator sizes scale with the number of angles. As a result, it is not
 surprising that the simulations with the LDO quadrature set have an increased
 memory requirement.
+% AGain, we need some wording here about why in the world anyone would use LDO. Remind us about the benefit of it and what makes it interesting. 
 
 %---------------------------------------------------------------------------%%
 \section{Conclusions and Future Work}
