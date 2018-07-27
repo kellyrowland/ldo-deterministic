@@ -3,9 +3,13 @@
 %set capital Roman numeral section headings
 %set capital Aramaic letters subsection headings
 %set capital Arabic numbers subsubsection headings
-\renewcommand{\thesection}{\Roman{section}.}
-\renewcommand{\thesubsection}{\thesection\Alph{subsection}.}
-\renewcommand{\thesubsubsection}{\thesubsection\arabic{subsubsection}.}
+\renewcommand{\thesection}{\Roman{section}}
+\renewcommand{\thesubsection}{\thesection.\Alph{subsection}}
+\renewcommand{\thesubsubsection}{\thesubsection.\arabic{subsubsection}}
+
+\makeatletter
+\renewcommand\@seccntformat[1]{\csname the#1\endcsname.\quad}
+\makeatother
 
 %set capital Roman numeral table numeration
 \renewcommand*\thetable{\Roman{table}} 
@@ -280,9 +284,7 @@ source is expanded in terms of spherical harmonics:
 \end{equation}
 %
 where $\phi$ and $\vartheta$ are referred to as the ``angular flux
-moments''. The indices $i,j,k$ 
-% What is this supposed to be??
-Here, $\Ye{\ell m}{n}$ and $\Yo{\ell m}{n}$ are the ``even'' and
+moments''. Here, $\Ye{\ell m}{n}$ and $\Yo{\ell m}{n}$ are the ``even'' and
 ``odd'' real components of the spherical harmonic functions, defined as
 \cite{exmm}
 %
@@ -621,12 +623,10 @@ coefficients that are stored in the traditional scattering matrix given in
 Equation \eqref{denovo_scatter}. Because the two different formulations are
 formally identical and use these same cross section coefficients, it is not
 expected that the LDO formulation is any more or less susceptible to negative
-flux moments than the traditional discrete ordinates equations. 
-% good!
-We again note
+flux moments than the traditional discrete ordinates equations. We again note
 that the operator $\ve{D}$ is replaced by the identity matrix in the LDO
 formulation; incorporation of the quadrature set weights in the LDO equations
-is discussed in Section \ref{sec:flux}\
+is discussed in Section \ref{sec:flux}.
 
 In Equations \eqref{ldo_scatter} and \eqref{eq:ldosig}, $L'$, the order of the
 scattering expansion, depends on the value of $L'$ relative to $L$. If 
@@ -1094,17 +1094,20 @@ motivates further exploration of the LDO scalar flux solutions.
 Finally, Table \ref{steel-stats} lists the reported run times and memory usage
 for each quadrature set used in this test case. The run time for the
 simulation using the LDO quadrature set is one order of magnitude higher than
-all other listed run times. One of the main causes of the time difference is likely the octahedral
-asymmetry in angle exhibited by the LDO quadrature set. The KBA parallel sweep
-algorithm was written and implemented assuming that a given quadrature set has
-an equal number of angles among all octants, so asymmetric quadratures do not benefit as much from the angle pipelining of KBA. We also see that the simulation
-using the LDO quadrature set has a greater memory requirement than those with
-other quadrature types. Recalling Section \ref{sec:op}, 
-% there's a period after the section ref that shouldn't be there
-this is to be
-expected; the sizes of the matrices in the LDO formulation scale with the
-number of angles used rather than the number of scattering moments.
-% It might be quite helpful to say something here to remind us why we're bothering to consider LDO if it's more expensive and uses more memory.
+all other listed run times. One of the main causes of the time difference is
+likely the octahedral asymmetry in angle exhibited by the LDO quadrature set.
+The KBA parallel sweep algorithm was written and implemented assuming that a
+given quadrature set has an equal number of angles among all octants, so
+asymmetric quadratures do not benefit as much from the angle pipelining of
+KBA. We also see that the simulation using the LDO quadrature set has a
+greater memory requirement than those with other quadrature types. Recalling
+Section \ref{sec:op}, this is to be expected; the sizes of the matrices in
+the LDO formulation scale with the number of angles used rather than the
+number of scattering moments. We note that although the simulation using the
+LDO quadrature set incurs the highest run time and memory requirement, the
+general use of LDO quadrature sets remains of interest; the eventual prospect
+of strategically selecting the discrete angles in an LDO quadrature set used
+for a given scenario may provide better answers.
 
 \begin{table}[!htb]
 \centering
@@ -1283,11 +1286,10 @@ LDFE/QR             & 3\E{-5}             & 2.67\E{-1}  & 5.05\E{-2}
 \label{dlvn-fwd-diff-rel}
 \end{figure}
 
-Table \ref{dlvn-stats} lists the reported run times
-and memory usage for each quadrature set used in the various simulations of
-the DLVN benchmark. We again see a drastic increase in run time when using an
-LDO quadrature set as well as an increased memory requirement.
-% anything positive to say?
+Table \ref{dlvn-stats} lists the reported run times and memory usage for each
+quadrature set used in the various simulations of the DLVN benchmark. We again
+see a drastic increase in run time when using an LDO quadrature set as well as
+an increased memory requirement.
 
 \begin{table}[!htb]
 \centering
@@ -1302,17 +1304,17 @@ LDO           & 166.50 & 7829
 \end{tabular}
 \end{table}
 
-An important point of discussion is simulation results as a
-function of angular mesh refinement. We dive into this examination for the
-DLVN benchmark because the demonstrated errors are those relative to actual
-measurements determined experimentally rather than only other simulations. In the interest of brevity, we have
-chosen one detector location at which to examine the percent differences
-between the experimental flux values and the simulated scalar flux values for
-all of the quadrature types evaluated in this work. Recalling Table
-\ref{dlvn-fwd-diff-table} and the interest in the challenges inherent in
-simulating the DLVN benchmark, we will look at Detector 11, as it has the
-highest associated errors. Calculation errors as a function of angular mesh
-refinement are shown for the different quadrature types and mesh sizes in
+An important point of discussion is simulation results as a function of
+angular mesh refinement. We dive into this examination for the DLVN benchmark
+because the demonstrated errors are those relative to actual measurements
+determined experimentally rather than only other simulations. In the interest
+of brevity, we have chosen one detector location at which to examine the
+percent differences between the experimental flux values and the simulated
+scalar flux values for all of the quadrature types evaluated in this work.
+Recalling Table \ref{dlvn-fwd-diff-table} and the interest in the challenges
+inherent in simulating the DLVN benchmark, we will look at Detector 11, as it
+has the highest associated errors. Calculation errors as a function of angular
+mesh refinement are shown for the different quadrature types and mesh sizes in
 Figure \ref{dlvn-scale-all}.
 
 For the QR quadrature sets used in this study, the number of polar and
@@ -1335,18 +1337,18 @@ in a range of 16 to 225 total discrete angles.
          various quadratures' angular mesh refinement.}
 \label{dlvn-scale-all}
 \end{figure}
-% can you make it so it's easier to tell what numbers are on the y axis?
 
 In this plot, we see that the percent error is highest at coarse angular mesh
-refinements and tends to decrease to a stable value as the mesh is refined. We
+refinements and tends to decrease to a stable value as the mesh is refined. Of
+the quadrature types tested here, we see that the LDO quadrature sets
+stabilize to the lowest percent error for this detector location. We also
 note that, in general, approximately the same error value is achieved once the
 angular mesh of a given quadrature type has at least 100 discrete angles in
-total. Furthermore, we are particularly interested in the performance of the LDO
-quadrature sets as the angular mesh is refined in the new formulation. Figure
-\ref{dlvn-scale-ldo} shows the percent error relative to the experimentally
-measured flux values at all detector locations as a function of LDO angular
-mesh refinement.
-% maybe specifically call out that LDO gives the lowest error in fig 8?
+total. Furthermore, we are particularly interested in the performance of the
+LDO quadrature sets as the angular mesh is refined in the new formulation.
+Figure \ref{dlvn-scale-ldo} shows the percent error relative to the
+experimentally measured flux values at all detector locations as a function of
+LDO angular mesh refinement.
 
 \begin{figure}[!htb]
 \centering
@@ -1502,7 +1504,6 @@ algorithm due to the different numbers of discrete angles in each octant.
 Additionally, the increased memory requirement when using the LDO quadrature
 is to be expected when considering how the operator sizes scale between the
 traditional discrete ordinates equations and the LDO formulation.
-% I was wondering this before, how can we tell if all the slowness is from pipelining? Is the larger memory also causing slowdown b/c of data access / communication or anything like that?
 
 \begin{table}[!htb]
 \centering
@@ -1521,21 +1522,22 @@ LDO           & 59.35 & 13996
 %---------------------------------------------------------------------------%%
 \subsection{Summary}
 
-For the test cases presented, we have compared the scalar flux solutions from solving the LDO equations to those from solving
-the traditional discrete ordinates equations with a small variety of standard
-quadrature set types. In each test case, regardless of particle type, the
-results from solving the LDO equations best matched those from using the QR
-quadrature set in the traditional discrete ordinates formulation. In all
-cases, using an LDO quadrature set requires more time and memory than any of
-the standard quadrature types. We attribute the increased run time with the to
-a breakdown in the parallel efficiency of the KBA sweep algorithm due to the
-different numbers of discrete angles in each octant when using an LDO
-quadrature set. While operator sizes scale with the number of scattering
-moments used when using a standard quadrature set, the LDO formulation sees
-its operator sizes scale with the number of angles. As a result, it is not
-surprising that the simulations with the LDO quadrature set have an increased
-memory requirement.
-% AGain, we need some wording here about why in the world anyone would use LDO. Remind us about the benefit of it and what makes it interesting. 
+For the test cases presented, we have compared the scalar flux solutions from
+solving the LDO equations to those from solving the traditional discrete
+ordinates equations with a small variety of standard quadrature set types. In
+each test case, regardless of particle type, the results from solving the LDO
+equations best matched those from using the QR quadrature set in the
+traditional discrete ordinates formulation. In all cases, using an LDO
+quadrature set requires more time and memory than any of the standard
+quadrature types. We attribute the increased run time with the to a breakdown
+in the parallel efficiency of the KBA sweep algorithm due to the different
+numbers of discrete angles in each octant when using an LDO quadrature set.
+While operator sizes scale with the number of scattering moments used when
+using a standard quadrature set, the LDO formulation sees its operator sizes
+scale with the number of angles. As a result, it is not surprising that the
+simulations with the LDO quadrature set have an increased memory requirement.
+Still, the LDO quadratures' unique properties beget interest in further
+studies.
 
 %---------------------------------------------------------------------------%%
 \section{Conclusions and Future Work}
