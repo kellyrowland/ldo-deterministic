@@ -808,7 +808,7 @@ $z = 140$ cm.
 \caption{Materials and compositions in the steel plate in water scenario.}
 \label{steel-mat}
 \begin{tabular}{l|cc}
-\textbf{Material} & \multicolumn{2}{c}{\textbf{Isotopes (Atomic \%)}} \\ \hline
+\textbf{Material} & \multicolumn{2}{c}{\textbf{Isotopes (Atomic Ratio)}} \\ \hline
 \multirow{5}{*}{Source}   & U-235   & (0.000247) \\
                           & U-238   & (0.009287) \\
                           & Zr-nat. & (0.004009) \\
@@ -1101,13 +1101,16 @@ given quadrature set has an equal number of angles among all octants, so
 asymmetric quadratures do not benefit as much from the angle pipelining of
 KBA. We also see that the simulation using the LDO quadrature set has a
 greater memory requirement than those with other quadrature types. Recalling
-Section \ref{sec:op}, this is to be expected; the sizes of the matrices in
-the LDO formulation scale with the number of angles used rather than the
-number of scattering moments. We note that although the simulation using the
-LDO quadrature set incurs the highest run time and memory requirement, the
-general use of LDO quadrature sets remains of interest; the eventual prospect
-of strategically selecting the discrete angles in an LDO quadrature set used
-for a given scenario may provide better answers.
+Section \ref{sec:op}, this is to be expected; the sizes of the matrices in the
+LDO formulation scale with the number of angles used rather than the number of
+scattering moments. It also may be the case that the increased memory
+requirement with the LDO quadrature set contributes to the longer run time;
+the size of these larger data structures may not fit in lower cache levels,
+and the reduced data locality may increase run time as well. We note that
+although the simulation using the LDO quadrature set incurs the highest run
+time and memory requirement, the general use of LDO quadrature sets remains of
+interest; the eventual prospect of strategically selecting the discrete angles
+in an LDO quadrature set used for a given scenario may provide better answers.
 
 \begin{table}[!htb]
 \centering
